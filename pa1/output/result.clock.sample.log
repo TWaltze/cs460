@@ -1,0 +1,13 @@
+
+PostgreSQL stand-alone backend 8.4.22
+backend> statement: DROP TABLE IF EXISTS calc_result;
+
+backend> statement: SELECT R.num1 AS A, S.pkey AS B, R.node AS C, S.node AS D, R.inserttime AS E, S.inserttime AS F INTO TABLE calc_result FROM raw_r_tuples R, raw_s_tuples S WHERE R.num1=S.pkey;
+
+backend> statement: SELECT count(*) FROM calc_result;
+
+	 1: count	(typeid = 20, len = 8, typmod = -1, byval = t)
+	----
+	 1: count = "917"	(typeid = 20, len = 8, typmod = -1, byval = t)
+	----
+backend> 

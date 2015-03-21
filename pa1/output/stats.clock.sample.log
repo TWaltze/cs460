@@ -1,0 +1,31 @@
+NOTICE:  table "calc_result" does not exist, skipping
+LOG:  EXECUTOR STATISTICS
+DETAIL:  ! system usage stats:
+	!	0.020450 elapsed 0.000000 user 0.004000 system sec
+	!	[0.048000 user 0.232000 sys total]
+	!	0/728 [0/1104] filesystem blocks in/out
+	!	0/39 [0/1629] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	12/0 [20/5] voluntary/involuntary context switches
+	! buffer usage stats:
+	!	Shared blocks:        432 read,        250 written, buffer hit rate = 87.17%
+	!	Local  blocks:          0 read,          0 written, buffer hit rate = 0.00%
+	!	Direct blocks:          0 read,          0 written
+STATEMENT:  SELECT R.num1 AS A, S.pkey AS B, R.node AS C, S.node AS D, R.inserttime AS E, S.inserttime AS F INTO TABLE calc_result FROM raw_r_tuples R, raw_s_tuples S WHERE R.num1=S.pkey;
+	
+LOG:  EXECUTOR STATISTICS
+DETAIL:  ! system usage stats:
+	!	0.000471 elapsed 0.000000 user 0.000000 system sec
+	!	[0.052000 user 0.232000 sys total]
+	!	0/168 [0/1288] filesystem blocks in/out
+	!	0/4 [0/1652] page faults/reclaims, 0 [0] swaps
+	!	0 [0] signals rcvd, 0/0 [0/0] messages rcvd/sent
+	!	0/0 [22/5] voluntary/involuntary context switches
+	! buffer usage stats:
+	!	Shared blocks:         84 read,         82 written, buffer hit rate = 0.00%
+	!	Local  blocks:          0 read,          0 written, buffer hit rate = 0.00%
+	!	Direct blocks:          0 read,          0 written
+STATEMENT:  SELECT count(*) FROM calc_result;
+	
+LOG:  shutting down
+LOG:  database system is shut down
