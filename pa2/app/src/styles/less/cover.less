@@ -16,5 +16,34 @@
             height: auto;
             display: block;
         }
+
+        &:hover &__info {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        &__info {
+            position: absolute;
+            width: 100%;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            background: fade(@brand-primary, 90%);
+            text-align: center;
+            color: #fff;
+            font-weight: 300;
+
+            opacity: 0;
+            transform: scale(0.8);
+            transition: all .3s;
+
+
+            &--vertical-align {
+                position: absolute;
+                top: 50%;
+                width: 100%;
+                transform: translateY(-50%);
+            }
+        }
     }
 }
