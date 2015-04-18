@@ -35,6 +35,10 @@ module.exports = function(grunt) {
                 files: ['<%= dirs.app %>/**/*.html'],
                 tasks: ['newer:copy:dev']
             },
+            lib: {
+                files: ['<%= dirs.app %>/lib/**/*'],
+                tasks: ['newer:copy:dev']
+            },
             livereload: {
                 options: {
                     livereload: '<%= connect.options.livereload %>'
@@ -43,7 +47,8 @@ module.exports = function(grunt) {
                     '<%= dirs.dev %>/**/*.html',
                     '<%= dirs.dev %>/styles/**/*.css',
                     '<%= dirs.dev %>/js/**/*.js',
-                    '<%= dirs.dev %>/img/**/*'
+                    '<%= dirs.dev %>/img/**/*',
+                    '<%= dirs.app %>/lib/**/*'
                 ]
             }
         },
@@ -179,7 +184,8 @@ module.exports = function(grunt) {
                         '*.{ico,png,txt}',
                         '**/*.html',
                         'js/**/*.*',
-                        'styles/fonts/**/*.*'
+                        'styles/fonts/**/*.*',
+                        'lib/**/*'
                     ]
                 }]
             },
@@ -194,7 +200,8 @@ module.exports = function(grunt) {
                         '**/*.html',
                         'js/**/*.*',
                         'styles/fonts/**/*.*',
-                        'img/**/*.{gif,jpeg,jpg,png}'
+                        'img/**/*.{gif,jpeg,jpg,png}',
+                        'lib/**/*'
                     ]
                 }]
             }
