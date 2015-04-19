@@ -10,6 +10,10 @@ class Photo {
     private $pid = null;
     private $createdAt = null;
 
+    public function getPID() {
+        return $this->pid;
+    }
+
     public function create() {
         $db = new DBConnection();
         $result = $db->query("INSERT INTO photos (
@@ -24,17 +28,25 @@ class Photo {
             $this->caption
         ]);
 
-        var_dump($result->errorInfo());
+        // var_dump($result->errorInfo());
 
         $this->pid = $db->db()->lastInsertId();
+        return $this;
+    }
+
+    public function save() {
+        $db = new DBConnection();
+        $result = $db->query("UPDATE photos SET caption = ? WHERE pid = ?", [
+            $this->caption,
+            $this->pid
+        ]);
+
         return $this;
     }
 
     public static function find($pid) {
         $db = new DBConnection();
         $result = $db->query("SELECT * FROM photos WHERE pid = ?", [$pid]);
-
-        var_dump($result->errorInfo());
 
         $info = $result->fetchObject();
 
@@ -49,8 +61,56 @@ class Photo {
         return $photo;
     }
 
-    public function getPID() {
-        return $this->pid;
+    public function getComments() {
+        $db = new DBConnection();
+        $result = $db->query("SELECT * FROM comments WHERE photo = ?", [$this->pid]);
+
+        $comments = $result->fetchAll();
+        return $comments;
+    }
+
+    public function comment($user, $comment) {
+        $db = new DBConnection();
+        $result = $db->query("INSERT INTO comments (
+            author,
+            photo,
+            comment
+        ) VALUES (?, ?, ?)", [
+            $user,
+            $this->pid,
+            $comment
+        ]);
+
+        return $this;
+    }
+
+    public function getLikes() {
+        $db = new DBConnection();
+        $result = $db->query("SELECT * FROM likes WHERE photo = ?", [$this->pid]);
+
+        $likes = $result->fetchAll();
+        return $likes;
+    }
+
+    public function getTags() {
+        $db = new DBConnection();
+        $result = $db->query("SELECT * FROM tags WHERE photo = ?", [$this->pid]);
+
+        $tags = $result->fetchAll();
+        return $tags;
+    }
+
+    public function addTag($tag) {
+        $db = new DBConnection();
+        $result = $db->query("INSERT INTO tags (
+            tag,
+            photo
+        ) VALUES (?, ?)", [
+            $tag,
+            $this->pid
+        ]);
+
+        return $this;
     }
 
     public function likeByUser($uid) {
@@ -62,8 +122,6 @@ class Photo {
             $this->pid,
             $uid
         ]);
-
-        var_dump($result->errorInfo());
 
         return $this;
     }

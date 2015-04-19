@@ -8,6 +8,10 @@ class Album {
     private $aid = null;
     private $createdAt = null;
 
+    public function getAID() {
+        return $this->aid;
+    }
+
     public function create() {
         $db = new DBConnection();
         $result = $db->query("INSERT INTO albums (
@@ -24,11 +28,27 @@ class Album {
         return $this;
     }
 
+    public function save() {
+        $db = new DBConnection();
+        $result = $db->query("UPDATE albums SET name = ? WHERE aid = ?", [
+            $this->name,
+            $this->aid
+        ]);
+
+        return $this;
+    }
+
+    public function delete() {
+        $db = new DBConnection();
+        $deletePhotos = $db->query("DELETE FROM photos WHERE album = ?", [$this->aid]);
+        $deleteAlbum = $db->query("DELETE FROM albums WHERE aid = ?", [$this->aid]);
+
+        return true;
+    }
+
     public static function find($aid) {
         $db = new DBConnection();
         $result = $db->query("SELECT * FROM albums WHERE aid = ?", [$aid]);
-
-        var_dump($result->errorInfo());
 
         $info = $result->fetchObject();
 
@@ -41,8 +61,12 @@ class Album {
         return $album;
     }
 
-    public function getAID() {
-        return $this->aid;
+    public function getPhotos() {
+        $db = new DBConnection();
+        $result = $db->query("SELECT * FROM photos WHERE album = ?", [$this->aid]);
+
+        $photos = $result->fetchAll();
+        return $photos;
     }
 }
 ?>
