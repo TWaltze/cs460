@@ -71,6 +71,11 @@ class Photo {
 
     public function comment($user, $comment) {
         $db = new DBConnection();
+
+        if($this->owner === $user) {
+            throw new Exception("You cannot comment on your own photos.");
+        }
+
         $result = $db->query("INSERT INTO comments (
             author,
             photo,
