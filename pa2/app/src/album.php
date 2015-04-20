@@ -57,14 +57,14 @@ $photos = $album->getPhotos();
                 <?php foreach ($photos as $key => $photo) { ?>
                     <div class="col-xs-3">
                         <div class="thumbnail">
-                            <a href=""><img src="http://lorempixel.com/300/300/"></a>
+                            <a href="/photo.php?photo=<?php echo $photo->getPID(); ?>"><img src="http://lorempixel.com/300/300/"></a>
                             <div class="caption">
-                                <h4>by <a href=""><?php echo $owner->firstName; ?></a> <span class="label label-primary pull-right"><?php echo $photo->timeAgo(); ?></span></h4>
-                                <p><?php echo count($photo->getLikes()); ?> likes and <?php echo count($photo->getComments()); ?> <a href="">comments</a><p>
+                                <h4>by <a href="/user.php?user=<?php echo $owner->getUID(); ?>"><?php echo $owner->firstName; ?></a> <span class="label label-primary pull-right"><?php echo $photo->timeAgo(); ?></span></h4>
+                                <p><?php echo count($photo->getLikes()); ?> likes and <?php echo count($photo->getComments()); ?> comments<p>
                                 <p>
                                     <?php
                                     foreach ($photo->getTags() as $tag) {
-                                        echo "<a href='' class='label label-default'>{$tag['tag']}</a> ";
+                                        echo "<a href='/search.php?tag={$tag['tag']}' class='label label-default'>{$tag['tag']}</a> ";
                                     }
                                     ?>
                                 </p>

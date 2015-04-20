@@ -59,7 +59,7 @@ $popularTags = Search::popularTags(10);
                     <div class="cover__item__info">
                         <div class="cover__item__info--vertical-align">
                             <h1>#<?php echo $key + 1; ?></h1>
-                            <h3><a href=""><?php echo $user['firstName']; ?></a></h3>
+                            <h3><a href="/user.php?user=<?php echo $user['uid']; ?>"><?php echo $user['firstName']; ?></a></h3>
                         </div>
                     </div>
                 </div>
@@ -77,14 +77,14 @@ $popularTags = Search::popularTags(10);
                         ?>
                         <div class="col-xs-4">
                             <div class="thumbnail">
-                                <img src="http://lorempixel.com/300/300/">
+                                <a href="/photo.php?photo=<?php echo $p->getPID(); ?>"><img src="http://lorempixel.com/300/300/"></a>
                                 <div class="caption">
-                                    <h4>by <a href=""><?php echo $user->firstName; ?></a> <span class="label label-primary pull-right">4 hours ago</span></h4>
-                                    <p><?php echo count($p->getLikes()); ?> likes and <?php echo count($p->getComments()); ?> <a href="">comments</a><p>
+                                    <h4>by <a href="/user.php?user=<?php echo $user->getUID(); ?>"><?php echo $user->firstName; ?></a> <span class="label label-primary pull-right">4 hours ago</span></h4>
+                                    <p><?php echo count($p->getLikes()); ?> likes and <?php echo count($p->getComments()); ?> comments<p>
                                     <p>
                                         <?php
                                         foreach ($p->getTags() as $tag) {
-                                            echo "<a href='' class='label label-default'>{$tag['tag']}</a> ";
+                                            echo "<a href='/search.php?tag={$tag['tag']}' class='label label-default'>{$tag['tag']}</a> ";
                                         }
                                         ?>
                                     </p>
@@ -99,7 +99,7 @@ $popularTags = Search::popularTags(10);
                 <div class="tag-cloud">
                     <?php
                     foreach ($popularTags as $tag) {
-                        echo "<a href='' class='tag-cloud__tag'>{$tag['tag']} <span class='badge'>{$tag['count']}</span></a>";
+                        echo "<a href='/search.php?tag={$tag['tag']}' class='tag-cloud__tag'>{$tag['tag']} <span class='badge'>{$tag['count']}</span></a>";
                     }
                     ?>
                 </div>

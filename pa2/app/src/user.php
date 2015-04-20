@@ -59,9 +59,9 @@ $albums = $user->getAlbums();
                         ?>
                         <div class="col-xs-4">
                             <div class="thumbnail">
-                                <a href=""><img src="http://lorempixel.com/300/300/"></a>
+                                <a href="/album.php?album=<?php echo $album->getAID(); ?>"><img src="http://lorempixel.com/300/300/"></a>
                                 <div class="caption">
-                                    <h4><a href=""><?php echo $album->name; ?></a></h4>
+                                    <h4><a href="/album.php?album=<?php echo $album->getAID(); ?>"><?php echo $album->name; ?></a></h4>
                                     <ul class="list-group">
                                         <li class="list-group-item">Created <?php echo $album->timeAgo(); ?></li>
                                         <li class="list-group-item">Contains <?php echo count($photos); ?> photos</li>

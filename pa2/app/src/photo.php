@@ -61,7 +61,7 @@ $tags = $photo->getTags();
         <div class="container">
             <p class="lead"><?php echo $photo->caption; ?></p>
             <ul class="list-inline">
-                <li>By <a href=""><?php echo $owner->firstName . " " . $owner->lastName; ?></a></li>
+                <li>By <a href="/user.php?user=<?php echo $owner->getUID(); ?>"><?php echo $owner->firstName . " " . $owner->lastName; ?></a></li>
                 <li>Posted <?php echo $photo->timeAgo(); ?></li>
                 <li><?php echo count($likes); ?> likes</li>
                 <li><?php echo count($comments); ?> comments</li>
@@ -69,7 +69,7 @@ $tags = $photo->getTags();
             <ul class="list-inline">
                 <?php
                 foreach ($photo->getTags() as $tag) {
-                    echo "<li><a href='' class='label label-default'>{$tag['tag']}</a></li> ";
+                    echo "<li><a href='/search.php?tag={$tag['tag']}' class='label label-default'>{$tag['tag']}</a></li> ";
                 }
                 ?>
             </ul>
@@ -79,10 +79,10 @@ $tags = $photo->getTags();
                 <h3>Comments</h3>
                 <?php foreach ($comments as $comment) { ?>
                     <?php
-                    $user = User::find($comment['author']);
+                    $author = User::find($comment['author']);
                     ?>
                     <div>
-                        <h4><a href=""><?php echo $user->firstName . " " . $user->lastName; ?></a></h4>
+                        <h4><a href="/user.php?user=<?php echo $author->getUID(); ?>"><?php echo $author->firstName . " " . $author->lastName; ?></a></h4>
                         <p><?php echo $comment['comment']; ?></p>
                         <small class="">posted <?php echo timeAgo($comment['createdAt']); ?></small>
                     </div>
@@ -94,7 +94,7 @@ $tags = $photo->getTags();
                     <?php
                     foreach ($likes as $like) {
                         $user = User::find($like['user']);
-                        echo "<li><a href=''>{$user->firstName}</a></li>";
+                        echo "<li><a href='/user.php?user={$user->getUID()}'>{$user->firstName}</a></li>";
                     }
                     ?>
                 </ul>
