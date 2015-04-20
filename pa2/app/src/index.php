@@ -1,10 +1,8 @@
 <?php
-require_once('lib/controllers/Auth.php');
+require_once('lib/models/Auth.php');
 require_once('lib/controllers/Search.php');
 require_once('lib/models/Photo.php');
 require_once('lib/models/User.php');
-
-Auth::authenticate("hello@tylerwaltze.com", "password");
 
 $topUsers = Search::topUsers(12);
 $popularPhotos = Search::popularPhotos(3);

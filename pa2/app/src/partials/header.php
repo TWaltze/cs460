@@ -1,3 +1,5 @@
+<?php require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/models/Auth.php"); ?>
+
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -11,13 +13,21 @@
         </div>
 
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="#">Home</a></li>
-                <li><a href="#">My photos</a></li>
-                <li><a href="#">Create album</a></li>
-                <li><a href="#">Friends</a></li>
-                <li><a href="#">Logout</a></li>
-            </ul>
+            <?php if(Auth::isLoggedIn()) { ?>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="#">My photos</a></li>
+                    <li><a href="#">Create album</a></li>
+                    <li><a href="#">Friends</a></li>
+                    <li><a href="/logout.php">Logout</a></li>
+                </ul>
+            <?php } else { ?>
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="#">Home</a></li>
+                    <li><a href="/login.php">Login</a></li>
+                    <li><a href="/register.php">Register</a></li>
+                </ul>
+            <?php } ?>
             <form action="/search.php" class="navbar-form navbar-right" role="search">
                 <div class="form-group">
                     <input type="text" name="tag" class="form-control" placeholder="tags">

@@ -4,7 +4,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/controllers/DBConnection.php");
 
 class Auth {
     public static function isLoggedIn() {
-        return $_SESSION['logged'];
+        return array_key_exists('logged', $_SESSION) && $_SESSION['logged'];
     }
 
     public static function loggedInAs() {
