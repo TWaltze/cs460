@@ -20,35 +20,8 @@ $albums = $user->getAlbums();
         <script src="js/vendor/modernizr.min.js"></script>
     </head>
     <body>
-        <nav class="navbar navbar-default navbar-fixed-top">
-            <div class="container">
-                <div class="navbar-header">
-                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-                        <span class="sr-only">Toggle navigation</span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                        <span class="icon-bar"></span>
-                    </button>
-                    <a class="navbar-brand" href="#">PicShare</a>
-                </div>
+        <?php require('partials/header.php'); ?>
 
-                <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="#">Home</a></li>
-                        <li><a href="#">My photos</a></li>
-                        <li><a href="#">Create album</a></li>
-                        <li><a href="#">Friends</a></li>
-                        <li><a href="#">Logout</a></li>
-                    </ul>
-                    <form class="navbar-form navbar-right" role="search">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="tags">
-                        </div>
-                        <button type="submit" class="btn btn-default">Search</button>
-                    </form>
-                </div>
-            </div>
-        </nav>
         <div class="container">
             <div class="col-xs-8">
                 <h2><?php echo $user->firstName; ?>'s albums</h2>

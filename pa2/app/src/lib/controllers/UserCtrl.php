@@ -1,5 +1,6 @@
 <?php
-require_once('../models/User.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/models/User.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/controllers/Auth.php");
 
 class UserCtrl {
     public static function create($email, $password, $firstName, $lastName, $dob) {
@@ -8,7 +9,7 @@ class UserCtrl {
         $user->firstName = $firstName;
         $user->lastName = $lastName;
         $user->dob = $dob;
-        $user->setPassword(UserCtrl::hashPassword($password));
+        $user->setPassword(Auth::hashPassword($password));
 
         try {
             $user->create();
