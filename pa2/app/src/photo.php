@@ -1,3 +1,15 @@
+<?php
+require_once('lib/models/Album.php');
+require_once('lib/models/Photo.php');
+require_once('lib/models/User.php');
+require_once('lib/utils/timeAgo.php');
+$id = intval(preg_replace('/\D/', '', $_GET['photo']));
+$photo = Photo::find($id);
+$owner = User::find($photo->owner);
+$likes = $photo->getLikes();
+$comments = $photo->getComments();
+$tags = $photo->getTags();
+?>
 <!DOCTYPE html>
 <html class="no-js">
     <head>
@@ -47,39 +59,44 @@
             <img class="img-responsive center-block" src="http://lorempixel.com/1500/500/">
         </div>
         <div class="container">
-            <p class="lead">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <p class="lead"><?php echo $photo->caption; ?></p>
             <ul class="list-inline">
-                <li>By <a href="">username</a></li>
-                <li>Posted 4 days ago</li>
-                <li>163 likes</li>
-                <li>33 comments</li>
+                <li>By <a href=""><?php echo $owner->firstName . " " . $owner->lastName; ?></a></li>
+                <li>Posted <?php echo $photo->timeAgo(); ?></li>
+                <li><?php echo count($likes); ?> likes</li>
+                <li><?php echo count($comments); ?> comments</li>
             </ul>
             <ul class="list-inline">
-                <li><a href="#" class="label label-default">tag</a></li>
-                <li><a href="#" class="label label-default">tag</a></li>
+                <?php
+                foreach ($photo->getTags() as $tag) {
+                    echo "<li><a href='' class='label label-default'>{$tag['tag']}</a></li> ";
+                }
+                ?>
             </ul>
         </div>
         <div class="container">
             <div class="col-xs-8">
                 <h3>Comments</h3>
-                <div>
-                    <h4><a href="">username</a></h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                    <small class="">posted 4 days ago</small>
-                </div>
-                <div>
-                    <h4><a href="">username</a></h4>
-                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                    <small class="">posted 4 days ago</small>
-                </div>
+                <?php foreach ($comments as $comment) { ?>
+                    <?php
+                    $user = User::find($comment['author']);
+                    ?>
+                    <div>
+                        <h4><a href=""><?php echo $user->firstName . " " . $user->lastName; ?></a></h4>
+                        <p><?php echo $comment['comment']; ?></p>
+                        <small class="">posted <?php echo timeAgo($comment['createdAt']); ?></small>
+                    </div>
+                <?php } ?>
             </div>
             <div class="col-xs-4">
                 <h3>Likes</h3>
                 <ul class="list-inline">
-                    <li><a href="">username</a></li>
-                    <li><a href="">username</a></li>
-                    <li><a href="">username</a></li>
-                    <li><a href="">username</a></li>
+                    <?php
+                    foreach ($likes as $like) {
+                        $user = User::find($like['user']);
+                        echo "<li><a href=''>{$user->firstName}</a></li>";
+                    }
+                    ?>
                 </ul>
             </div>
         </div>

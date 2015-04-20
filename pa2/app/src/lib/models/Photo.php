@@ -1,6 +1,6 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/controllers/DBConnection.php");
-require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/Utils/timeAgo.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/utils/timeAgo.php");
 
 class Photo {
     public $album = null;
