@@ -1,5 +1,7 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/controllers/DBConnection.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/models/Album.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/models/Photo.php");
 
 class User {
     public $email = null;
@@ -119,7 +121,13 @@ class User {
         $result = $db->query("SELECT * FROM albums WHERE owner = ?", [$this->uid]);
 
         $albums = $result->fetchAll();
-        return $albums;
+
+        $a = [];
+        foreach ($albums as $album) {
+            $a[] = Album::convertFromDBObject($album);
+        }
+
+        return $a;
     }
 
     public function getPhotos() {
@@ -127,7 +135,13 @@ class User {
         $result = $db->query("SELECT * FROM photos WHERE owner = ?", [$this->uid]);
 
         $photos = $result->fetchAll();
-        return $photos;
+
+        $p = [];
+        foreach ($photos as $photo) {
+            $p[] = Photo::convertFromDBObject($photo);
+        }
+
+        return $p;
     }
 
     public function getComments() {

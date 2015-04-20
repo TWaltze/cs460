@@ -1,5 +1,6 @@
 <?php
-require_once("../controllers/DBConnection.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/controllers/DBConnection.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/Utils/timeAgo.php");
 
 class Album {
     public $name = null;
@@ -67,6 +68,21 @@ class Album {
 
         $photos = $result->fetchAll();
         return $photos;
+    }
+
+    public function timeAgo() {
+        return timeAgo($this->createdAt);
+    }
+
+    public static function convertFromDBObject($obj) {
+        $album = new Album();
+
+        $album->aid = $obj['aid'];
+        $album->name = $obj['name'];
+        $album->owner = $obj['owner'];
+        $album->createdAt = $obj['createdAt'];
+
+        return $album;
     }
 }
 ?>

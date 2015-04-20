@@ -1,3 +1,9 @@
+<?php
+require_once('lib/models/User.php');
+$uid = intval(preg_replace('/\D/', '', $_GET['user']));
+$user = User::find($uid);
+$albums = $user->getAlbums();
+?>
 <!DOCTYPE html>
 <html class="no-js">
     <head>
@@ -44,20 +50,37 @@
             </div>
         </nav>
         <div class="container">
-            <h2>Your albums</h2>
-            <div class="row">
-                <div class="col-xs-3">
-                    <div class="thumbnail">
-                        <a href=""><img src="http://lorempixel.com/300/300/"></a>
-                        <div class="caption">
-                            <h4><a href="">Album Title</a></h4>
-                            <ul class="list-group">
-                                <li class="list-group-item">Created 4 hours ago</li>
-                                <li class="list-group-item">Contains 44 photos</li>
-                            </ul>
+            <div class="col-xs-8">
+                <h2><?php echo $user->firstName; ?>'s albums</h2>
+                <div class="row">
+                    <?php foreach ($albums as $key => $album) { ?>
+                        <?php
+                        $photos = $album->getPhotos();
+                        ?>
+                        <div class="col-xs-4">
+                            <div class="thumbnail">
+                                <a href=""><img src="http://lorempixel.com/300/300/"></a>
+                                <div class="caption">
+                                    <h4><a href=""><?php echo $album->name; ?></a></h4>
+                                    <ul class="list-group">
+                                        <li class="list-group-item">Created <?php echo $album->timeAgo(); ?></li>
+                                        <li class="list-group-item">Contains <?php echo count($photos); ?> photos</li>
+                                    </ul>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    <?php } ?>
                 </div>
+            </div>
+            <div class="col-xs-4">
+                <h2>Profile</h2>
+                <ul class="list-group">
+                    <li class="list-group-item"><?php echo $user->firstName . " " . $user->lastName; ?></li>
+                    <li class="list-group-item"><?php echo $user->dob; ?></li>
+                    <li class="list-group-item"><?php echo $user->gender; ?></li>
+                    <li class="list-group-item"><?php echo $user->city . " " . $user->state . ", " . $user->country; ?></li>
+                    <li class="list-group-item"><?php echo $user->school; ?></li>
+                </ul>
             </div>
         </div>
 
