@@ -1,5 +1,5 @@
 <?php
-require("../controllers/DBConnection.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/controllers/DBConnection.php");
 
 class User {
     public $email = null;

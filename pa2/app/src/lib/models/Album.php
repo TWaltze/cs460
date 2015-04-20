@@ -1,5 +1,5 @@
 <?php
-require("../controllers/DBConnection.php");
+require_once("../controllers/DBConnection.php");
 
 class Album {
     public $name = null;

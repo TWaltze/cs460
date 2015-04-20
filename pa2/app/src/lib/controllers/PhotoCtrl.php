@@ -1,5 +1,5 @@
 <?php
-require('../models/Photo.php');
+require_once('../models/Photo.php');
 
 class PhotoCtrl {
     public static function create($album, $data, $caption = null) {

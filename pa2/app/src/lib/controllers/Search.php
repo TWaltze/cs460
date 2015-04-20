@@ -1,13 +1,12 @@
 <?php
-// require("../controllers/DBConnection.php");
-require("../models/Photo.php");
+require_once("DBConnection.php");
 
 class Search {
     public static function topUsers($amount) {
         $db = new DBConnection();
         $result = $db->query("
             SELECT uid, email, firstName, lastName, contribution
-            FROM (SELECT user, SUM(sum_piece) as points
+            FROM (SELECT user, SUM(sum_piece) as contribution
                 FROM (
                 	SELECT owner as user, COUNT(*) as sum_piece
                 	FROM photos

@@ -1,3 +1,11 @@
+<?php
+require_once('lib/controllers/Search.php');
+require_once('lib/models/Photo.php');
+require_once('lib/models/User.php');
+$topUsers = Search::topUsers(12);
+$popularPhotos = Search::popularPhotos(3);
+$popularTags = Search::popularTags(10);
+?>
 <!DOCTYPE html>
 <html class="no-js">
     <head>
@@ -45,73 +53,55 @@
         </nav>
 
         <div class="cover">
-            <div class="cover__item">
-                <img src="http://lorempixel.com/300/300/" />
-                <div class="cover__item__info">
-                    <div class="cover__item__info--vertical-align">
-                        <h1>#1</h1>
-                        <h3><a href="">username</a></h3>
-                        <ul class="list-inline">
-                            <li>54 photos</li>
-                            <li>13 comments</li>
-                        </ul>
+            <?php foreach ($topUsers as $key => $user) { ?>
+                <div class="cover__item">
+                    <img src="http://lorempixel.com/300/300/" />
+                    <div class="cover__item__info">
+                        <div class="cover__item__info--vertical-align">
+                            <h1>#<?php echo $key + 1; ?></h1>
+                            <h3><a href=""><?php echo $user['firstName']; ?></a></h3>
+                        </div>
                     </div>
                 </div>
-            </div>
+            <?php } ?>
         </div>
 
         <div class="container">
             <div class="col-xs-8">
                 <h2>You may like these photos</h2>
                 <div class="row">
-                    <div class="col-xs-4">
-                        <div class="thumbnail">
-                            <img src="http://lorempixel.com/300/300/">
-                            <div class="caption">
-                                <h4>by <a href="">username</a> <span class="label label-primary pull-right">4 hours ago</span></h4>
-                                <p>12 likes and 43 <a href="">comments</a><p>
-                                <p>
-                                    <a href="#" class="label label-default">tag</a>
-                                    <a href="#" class="label label-default">tag</a>
-                                </p>
+                    <?php foreach ($popularPhotos as $key => $photo) { ?>
+                        <?php
+                            $p = Photo::find($photo['pid']);
+                            $user = User::find($photo['owner']);
+                        ?>
+                        <div class="col-xs-4">
+                            <div class="thumbnail">
+                                <img src="http://lorempixel.com/300/300/">
+                                <div class="caption">
+                                    <h4>by <a href=""><?php echo $user->firstName; ?></a> <span class="label label-primary pull-right">4 hours ago</span></h4>
+                                    <p><?php echo count($p->getLikes()); ?> likes and <?php echo count($p->getComments()); ?> <a href="">comments</a><p>
+                                    <p>
+                                        <?php
+                                        foreach ($p->getTags() as $tag) {
+                                            echo "<a href='' class='label label-default'>{$tag['tag']}</a> ";
+                                        }
+                                        ?>
+                                    </p>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div class="col-xs-4">
-                        <div class="thumbnail">
-                            <img src="http://lorempixel.com/300/300/">
-                            <div class="caption">
-                                <h4>by <a href="">username</a> <span class="label label-primary pull-right">4 hours ago</span></h4>
-                                <p>12 likes and 43 <a href="">comments</a><p>
-                                <p>
-                                    <a href="#" class="label label-default">tag</a>
-                                    <a href="#" class="label label-default">tag</a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-4">
-                        <div class="thumbnail">
-                            <img src="http://lorempixel.com/300/300/">
-                            <div class="caption">
-                                <h4>by <a href="">username</a> <span class="label label-primary pull-right">4 hours ago</span></h4>
-                                <p>12 likes and 43 <a href="">comments</a><p>
-                                <p>
-                                    <a href="#" class="label label-default">tag</a>
-                                    <a href="#" class="label label-default">tag</a>
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                    <?php } ?>
                 </div>
             </div>
             <div class="col-xs-4">
                 <h2>Popular tags</h2>
                 <div class="tag-cloud">
-                    <a href="" class="tag-cloud__tag">nature <span class="badge">4</span></a>
-                    <a href="" class="tag-cloud__tag">boston <span class="badge">4</span></a>
-                    <a href="" class="tag-cloud__tag">car <span class="badge">4</span></a>
-                    <a href="" class="tag-cloud__tag">burger <span class="badge">4</span></a>
+                    <?php
+                    foreach ($popularTags as $tag) {
+                        echo "<a href='' class='tag-cloud__tag'>{$tag['tag']} <span class='badge'>{$tag['count']}</span></a>";
+                    }
+                    ?>
                 </div>
             </div>
         </div>

@@ -1,5 +1,5 @@
 <?php
-require('../models/Album.php');
+require_once('../models/Album.php');
 
 class AlbumCtrl {
     public static function create($name) {

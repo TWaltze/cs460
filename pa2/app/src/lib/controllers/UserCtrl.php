@@ -1,5 +1,5 @@
 <?php
-require('../models/User.php');
+require_once('../models/User.php');
 
 class UserCtrl {
     public static function create($email, $password, $firstName, $lastName, $dob) {
