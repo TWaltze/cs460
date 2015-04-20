@@ -1,3 +1,11 @@
+<?php
+require_once('lib/models/Album.php');
+require_once('lib/models/User.php');
+$id = intval(preg_replace('/\D/', '', $_GET['album']));
+$album = Album::find($id);
+$owner = User::find($album->owner);
+$photos = $album->getPhotos();
+?>
 <!DOCTYPE html>
 <html class="no-js">
     <head>
@@ -44,21 +52,26 @@
             </div>
         </nav>
         <div class="container">
-            <h2>Album Title</h2>
+            <h2><?php echo $album->name; ?></h2>
             <div class="row">
-                <div class="col-xs-3">
-                    <div class="thumbnail">
-                        <a href=""><img src="http://lorempixel.com/300/300/"></a>
-                        <div class="caption">
-                            <h4>by <a href="">username</a> <span class="label label-primary pull-right">4 hours ago</span></h4>
-                            <p>12 likes and 43 <a href="">comments</a><p>
-                            <p>
-                                <a href="#" class="label label-default">tag</a>
-                                <a href="#" class="label label-default">tag</a>
-                            </p>
+                <?php foreach ($photos as $key => $photo) { ?>
+                    <div class="col-xs-3">
+                        <div class="thumbnail">
+                            <a href=""><img src="http://lorempixel.com/300/300/"></a>
+                            <div class="caption">
+                                <h4>by <a href=""><?php echo $owner->firstName; ?></a> <span class="label label-primary pull-right"><?php echo $photo->timeAgo(); ?></span></h4>
+                                <p><?php echo count($photo->getLikes()); ?> likes and <?php echo count($photo->getComments()); ?> <a href="">comments</a><p>
+                                <p>
+                                    <?php
+                                    foreach ($photo->getTags() as $tag) {
+                                        echo "<a href='' class='label label-default'>{$tag['tag']}</a> ";
+                                    }
+                                    ?>
+                                </p>
+                            </div>
                         </div>
                     </div>
-                </div>
+                <?php } ?>
             </div>
         </div>
 

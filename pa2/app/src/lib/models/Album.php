@@ -1,5 +1,6 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/controllers/DBConnection.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/models/Photo.php");
 require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/Utils/timeAgo.php");
 
 class Album {
@@ -67,7 +68,13 @@ class Album {
         $result = $db->query("SELECT * FROM photos WHERE album = ?", [$this->aid]);
 
         $photos = $result->fetchAll();
-        return $photos;
+
+        $p = [];
+        foreach ($photos as $photo) {
+            $p[] = Photo::convertFromDBObject($photo);
+        }
+
+        return $p;
     }
 
     public function timeAgo() {

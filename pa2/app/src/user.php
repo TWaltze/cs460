@@ -1,7 +1,7 @@
 <?php
 require_once('lib/models/User.php');
-$uid = intval(preg_replace('/\D/', '', $_GET['user']));
-$user = User::find($uid);
+$id = intval(preg_replace('/\D/', '', $_GET['user']));
+$user = User::find($id);
 $albums = $user->getAlbums();
 ?>
 <!DOCTYPE html>
