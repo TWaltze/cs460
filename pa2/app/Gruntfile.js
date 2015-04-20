@@ -32,7 +32,7 @@ module.exports = function(grunt) {
                 tasks: ['less:dev', 'autoprefixer:dev']
             },
             html: {
-                files: ['<%= dirs.app %>/**/*.html'],
+                files: ['<%= dirs.app %>/**/*.{html,php}'],
                 tasks: ['newer:copy:dev']
             },
             lib: {
@@ -44,7 +44,7 @@ module.exports = function(grunt) {
                     livereload: '<%= connect.options.livereload %>'
                 },
                 files: [
-                    '<%= dirs.dev %>/**/*.html',
+                    '<%= dirs.dev %>/**/*.{html,php}',
                     '<%= dirs.dev %>/styles/**/*.css',
                     '<%= dirs.dev %>/js/**/*.js',
                     '<%= dirs.dev %>/img/**/*',
@@ -182,7 +182,7 @@ module.exports = function(grunt) {
                     dest: '<%= dirs.dist %>',
                     src: [
                         '*.{ico,png,txt}',
-                        '**/*.html',
+                        '**/*.{html,php}',
                         'js/**/*.*',
                         'styles/fonts/**/*.*',
                         'lib/**/*'
@@ -197,7 +197,7 @@ module.exports = function(grunt) {
                     dest: '<%= dirs.dev %>',
                     src: [
                         '*.{ico,png,txt}',
-                        '**/*.html',
+                        '**/*.{html,php}',
                         'js/**/*.*',
                         'styles/fonts/**/*.*',
                         'img/**/*.{gif,jpeg,jpg,png}',
