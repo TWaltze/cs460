@@ -1,5 +1,6 @@
 <?php
 require_once("DBConnection.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/models/Photo.php");
 
 class Search {
     public static function topUsers($amount) {
@@ -63,7 +64,14 @@ class Search {
         }
 
         $result = $db->query($query, $params);
-        return $result->fetchAll();
+        $photos = $result->fetchAll();
+
+        $p = [];
+        foreach ($photos as $photo) {
+            $p[] = Photo::convertFromDBObject($photo);
+        }
+
+        return $p;
     }
 }
 ?>
