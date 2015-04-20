@@ -19,9 +19,9 @@ class DBConnection {
         // Bind parameters based on value's type
         foreach ($params as $key => $value) {
             if(is_int($value)) {
-                $statement->bindParam($key + 1, $value, PDO::PARAM_INT);
+                $statement->bindParam($key + 1, $params[$key], PDO::PARAM_INT);
             } else {
-                $statement->bindParam($key + 1, $value, PDO::PARAM_STR);
+                $statement->bindParam($key + 1, $params[$key], PDO::PARAM_STR);
             }
         }
 
