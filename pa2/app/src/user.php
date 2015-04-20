@@ -1,4 +1,5 @@
 <?php
+require_once('lib/models/Auth.php');
 require_once('lib/models/User.php');
 $id = intval(preg_replace('/\D/', '', $_GET['user']));
 $user = User::find($id);
@@ -48,11 +49,35 @@ $albums = $user->getAlbums();
             <div class="col-xs-4">
                 <h2>Profile</h2>
                 <ul class="list-group">
+                    <?php if($user->firstName || $user->lastName) { ?>
                     <li class="list-group-item"><?php echo $user->firstName . " " . $user->lastName; ?></li>
+                    <?php } ?>
+
+                    <?php if($user->dob) { ?>
                     <li class="list-group-item"><?php echo $user->dob; ?></li>
+                    <?php } ?>
+
+                    <?php if($user->gender) { ?>
                     <li class="list-group-item"><?php echo $user->gender; ?></li>
-                    <li class="list-group-item"><?php echo $user->city . " " . $user->state . ", " . $user->country; ?></li>
+                    <?php } ?>
+
+                    <?php if($user->city || $user->state || $user->country) { ?>
+                    <li class="list-group-item">
+                        <?php
+                            echo $user->city . " " . $user->state;
+
+                            if($user->state && $user->country) {
+                                echo ", ";
+                            }
+
+                            echo $user->country;
+                        ?>
+                    </li>
+                    <?php } ?>
+
+                    <?php if($user->school) { ?>
                     <li class="list-group-item"><?php echo $user->school; ?></li>
+                    <?php } ?>
                 </ul>
             </div>
         </div>

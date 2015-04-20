@@ -13,11 +13,12 @@ class Auth {
 
     public static function authenticate($email, $password) {
         $db = new DBConnection();
-        $result = $db->query("SELECT password FROM users WHERE email = ?", [$email]);
+        $result = $db->query("SELECT uid, password FROM users WHERE email = ?", [$email]);
+        $user = $result->fetchObject();
 
-        if($result->rowCount() > 0 && Auth::validatePassword($password, $result->fetchObject()->password)) {
+        if($result->rowCount() > 0 && Auth::validatePassword($password, $user->password)) {
             $_SESSION['logged'] = true;
-            $_SESSION['uid'] = 1;
+            $_SESSION['uid'] = $user->uid;
 
             return true;
         } else {

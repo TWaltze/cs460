@@ -1,4 +1,5 @@
 <?php
+require_once('lib/models/Auth.php');
 require_once('lib/controllers/Search.php');
 require_once('lib/models/User.php');
 $tag = array_key_exists('tag', $_GET) ? preg_replace("/[^A-Za-z0-9 ]/", '', $_GET['tag']) : "%";
