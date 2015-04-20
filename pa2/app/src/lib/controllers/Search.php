@@ -6,7 +6,7 @@ class Search {
     public static function topUsers($amount) {
         $db = new DBConnection();
         $result = $db->query("
-            SELECT uid, email, firstName, lastName, points
+            SELECT uid, email, firstName, lastName, contribution
             FROM (SELECT user, SUM(sum_piece) as points
                 FROM (
                 	SELECT owner as user, COUNT(*) as sum_piece
@@ -20,11 +20,34 @@ class Search {
                 	GROUP BY author
                 ) as total_points
                 GROUP BY user
-                ORDER BY points DESC
+                ORDER BY contribution DESC
                 LIMIT ?) as top_users
             JOIN users on top_users.user = users.uid
         ", [$amount]);
 
+        return $result->fetchAll();
+    }
+
+    public static function popularPhotos($amount) {
+        $db = new DBConnection();
+
+        $query = "
+            SELECT *
+            FROM (SELECT photo, COUNT(*) as likes
+            	FROM likes
+            	GROUP BY photo) as like_counts JOIN photos ON like_counts.photo = photos.pid
+            ORDER BY likes DESC LIMIT ?";
+
+        $result = $db->query($query, [$amount]);
+        return $result->fetchAll();
+    }
+
+    public static function popularTags($amount) {
+        $db = new DBConnection();
+
+        $query = "SELECT tag, COUNT(*) as count FROM tags GROUP BY tag ORDER BY COUNT(*) DESC LIMIT ?";
+
+        $result = $db->query($query, [$amount]);
         return $result->fetchAll();
     }
 
@@ -41,10 +64,7 @@ class Search {
         }
 
         $result = $db->query($query, $params);
-        var_dump($result->errorInfo());
         return $result->fetchAll();
     }
 }
-
-var_dump(Search::photosByTag('boston'));
 ?>
