@@ -8,13 +8,18 @@ require_once('lib/utils/timeAgo.php');
 $id = intval(preg_replace('/\D/', '', $_GET['photo']));
 $photo = Photo::find($id);
 $owner = User::find($photo->owner);
-$comments = $photo->getComments();
 $tags = $photo->getTags();
+$alert = null;
 
 if(array_key_exists('like', $_GET)) {
-    PhotoCtrl::like($photo->getPID());
+    $alert = PhotoCtrl::like($photo->getPID());
 }
 
+if(array_key_exists('comment', $_POST)) {
+    $alert = PhotoCtrl::comment($photo->getPID(), $_POST['comment']);
+}
+
+$comments = $photo->getComments();
 $likes = $photo->getLikes();
 ?>
 <!DOCTYPE html>
@@ -34,6 +39,12 @@ $likes = $photo->getLikes();
     </head>
     <body>
         <?php require('partials/header.php'); ?>
+
+        <?php if($alert) { ?>
+            <div class="alert alert-<?php echo $alert['class']; ?> remove-bottom-margin remove-radius" role="alert">
+                <p class="container"><?php echo $alert['message']; ?></p>
+            </div>
+        <?php } ?>
 
         <div class="cover push-down">
             <img class="img-responsive center-block" src="http://lorempixel.com/1500/500/">
@@ -70,14 +81,38 @@ $likes = $photo->getLikes();
                 <h3>Comments</h3>
                 <?php foreach ($comments as $comment) { ?>
                     <?php
-                    $author = User::find($comment['author']);
+                    if($comment['author']) {
+                        $author = User::find($comment['author']);
+                        $uid = $author->getUID();
+                        $name = $author->firstName . " " . $author->lastName;
+                    } else {
+                        $uid = null;
+                        $name = "Anon";
+                    }
                     ?>
                     <div>
-                        <h4><a href="/user.php?user=<?php echo $author->getUID(); ?>"><?php echo $author->firstName . " " . $author->lastName; ?></a></h4>
+                        <h4>
+                            <?php
+                            if($uid) {
+                                echo "<a href='/user.php?user=$uid'>$name</a>";
+                            } else {
+                                echo $name;
+                            }
+                            ?>
+                        </h4>
                         <p><?php echo $comment['comment']; ?></p>
                         <small class="">posted <?php echo timeAgo($comment['createdAt']); ?></small>
                     </div>
                 <?php } ?>
+                <div>
+                    <h4>Add Comment</h4>
+                    <form method="post" action="">
+                        <div class="form-group">
+                            <textarea class="form-control" rows="3" placeholder="comment" name="comment"></textarea>
+                        </div>
+                        <input type="submit" value="post" class="btn btn-primary pull-right" />
+                    </form>
+                </div>
             </div>
             <div class="col-xs-4">
                 <h3>Likes</h3>
