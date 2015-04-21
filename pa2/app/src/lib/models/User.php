@@ -181,6 +181,20 @@ class User {
         return $this;
     }
 
+    public function isFriendsWith($user) {
+        $db = new DBConnection();
+        $result = $db->query("SELECT * FROM friends WHERE
+            (firstFriend = ? AND secondFriend = ?) OR
+            (firstFriend = ? AND secondFriend = ?)", [
+            $this->uid,
+            $user,
+            $user,
+            $this->uid
+        ]);
+
+        return $result->rowCount() > 0;
+    }
+
     public function getFriends() {
         $db = new DBConnection();
         $result = $db->query("SELECT * FROM friends WHERE firstFriend = ? OR secondFriend = ?", [$this->uid, $this->uid]);

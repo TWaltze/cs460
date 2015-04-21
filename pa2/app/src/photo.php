@@ -8,13 +8,14 @@ require_once('lib/utils/timeAgo.php');
 $id = intval(preg_replace('/\D/', '', $_GET['photo']));
 $photo = Photo::find($id);
 $owner = User::find($photo->owner);
-$likes = $photo->getLikes();
 $comments = $photo->getComments();
 $tags = $photo->getTags();
 
 if(array_key_exists('like', $_GET)) {
     PhotoCtrl::like($photo->getPID());
 }
+
+$likes = $photo->getLikes();
 ?>
 <!DOCTYPE html>
 <html class="no-js">

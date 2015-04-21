@@ -45,8 +45,19 @@ class UserCtrl {
         }
     }
 
-    public static function hashPassword($password) {
-        return $password;
+    public static function friend($uid) {
+        if(!Auth::isLoggedIn()) {
+            return false;
+        }
+
+        $user = User::find($uid);
+        $current = Auth::loggedInAs();
+
+        if($user->isFriendsWith($current)) {
+            $user->removeFriend($current);
+        } else {
+            $user->addFriend($current);
+        }
     }
 }
 ?>

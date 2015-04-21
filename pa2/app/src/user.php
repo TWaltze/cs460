@@ -1,9 +1,14 @@
 <?php
 require_once('lib/models/Auth.php');
 require_once('lib/models/User.php');
+require_once('lib/controllers/UserCtrl.php');
 $id = intval(preg_replace('/\D/', '', $_GET['user']));
 $user = User::find($id);
 $albums = $user->getAlbums();
+
+if(array_key_exists('friend', $_GET)) {
+    UserCtrl::friend($user->getUID());
+}
 ?>
 <!DOCTYPE html>
 <html class="no-js">
@@ -47,7 +52,26 @@ $albums = $user->getAlbums();
                 </div>
             </div>
             <div class="col-xs-4">
-                <h2>Profile</h2>
+                <h2>
+                    Profile
+
+                    <?php if (Auth::isLoggedIn()) { ?>
+                        <?php
+                            if ($user->isFriendsWith(Auth::loggedInAs())) {
+                                $friendStyle = "danger";
+                                $friendText = "remove as friend";
+                            } else {
+                                $friendStyle = "success";
+                                $friendText = "add as friend";
+                            }
+                        ?>
+
+                        <a href="<?php echo "//$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>&friend" class="btn btn-<?php echo $friendStyle; ?> btn" style="line-height: normal;" role="button">
+                            <?php echo $friendText; ?>
+                        </a>
+
+                    <?php } ?>
+                </h2>
                 <ul class="list-group">
                     <?php if($user->firstName || $user->lastName) { ?>
                     <li class="list-group-item"><?php echo $user->firstName . " " . $user->lastName; ?></li>
