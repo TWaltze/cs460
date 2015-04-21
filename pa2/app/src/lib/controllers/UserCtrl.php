@@ -1,6 +1,7 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/models/User.php");
 require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/models/Auth.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/models/Alert.php");
 
 class UserCtrl {
     public static function create($email, $password, $firstName, $lastName, $dob) {
@@ -47,7 +48,7 @@ class UserCtrl {
 
     public static function friend($uid) {
         if(!Auth::isLoggedIn()) {
-            return false;
+            return new Alert("danger", "You must be logged in to friend {$user->firstName}.");
         }
 
         $user = User::find($uid);
@@ -55,8 +56,12 @@ class UserCtrl {
 
         if($user->isFriendsWith($current)) {
             $user->removeFriend($current);
+
+            return new Alert("success", "You unfriended {$user->firstName}.");
         } else {
             $user->addFriend($current);
+
+            return new Alert("success", "You friended {$user->firstName}.");
         }
     }
 }

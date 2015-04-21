@@ -2,12 +2,14 @@
 require_once('lib/models/Auth.php');
 require_once('lib/models/User.php');
 require_once('lib/controllers/UserCtrl.php');
+
 $id = intval(preg_replace('/\D/', '', $_GET['user']));
 $user = User::find($id);
 $albums = $user->getAlbums();
+$alert = null;
 
 if(array_key_exists('friend', $_GET)) {
-    UserCtrl::friend($user->getUID());
+    $alert = UserCtrl::friend($user->getUID());
 }
 ?>
 <!DOCTYPE html>
@@ -27,6 +29,7 @@ if(array_key_exists('friend', $_GET)) {
     </head>
     <body>
         <?php require('partials/header.php'); ?>
+        <?php require('partials/alert.php'); ?>
 
         <div class="container">
             <div class="col-xs-8">

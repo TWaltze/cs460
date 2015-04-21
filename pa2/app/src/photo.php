@@ -39,12 +39,7 @@ $likes = $photo->getLikes();
     </head>
     <body>
         <?php require('partials/header.php'); ?>
-
-        <?php if($alert) { ?>
-            <div class="alert alert-<?php echo $alert['class']; ?> remove-bottom-margin remove-radius" role="alert">
-                <p class="container"><?php echo $alert['message']; ?></p>
-            </div>
-        <?php } ?>
+        <?php require('partials/alert.php'); ?>
 
         <div class="cover push-down">
             <img class="img-responsive center-block" src="http://lorempixel.com/1500/500/">
