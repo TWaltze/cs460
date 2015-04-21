@@ -65,7 +65,7 @@ class Album {
 
     public function getPhotos() {
         $db = new DBConnection();
-        $result = $db->query("SELECT * FROM photos WHERE album = ?", [$this->aid]);
+        $result = $db->query("SELECT * FROM photos WHERE album = ? ORDER BY createdAt DESC", [$this->aid]);
 
         $photos = $result->fetchAll();
 

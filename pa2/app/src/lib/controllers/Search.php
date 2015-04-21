@@ -54,7 +54,7 @@ class Search {
     public static function photosByTag($tag, $user = null) {
         $db = new DBConnection();
 
-        $query = "SELECT * FROM photos JOIN tags ON tags.photo = photos.pid WHERE tag LIKE ?";
+        $query = "SELECT * FROM photos JOIN tags ON tags.photo = photos.pid WHERE tag LIKE ? ORDER BY createdAt DESC";
         $params = [$tag];
 
         // Allow filtering by user

@@ -118,7 +118,7 @@ class User {
 
     public function getAlbums() {
         $db = new DBConnection();
-        $result = $db->query("SELECT * FROM albums WHERE owner = ?", [$this->uid]);
+        $result = $db->query("SELECT * FROM albums WHERE owner = ? ORDER BY createdAt DESC", [$this->uid]);
 
         $albums = $result->fetchAll();
 
@@ -132,7 +132,7 @@ class User {
 
     public function getPhotos() {
         $db = new DBConnection();
-        $result = $db->query("SELECT * FROM photos WHERE owner = ?", [$this->uid]);
+        $result = $db->query("SELECT * FROM photos WHERE owner = ? ORDER BY createdAt DESC", [$this->uid]);
 
         $photos = $result->fetchAll();
 

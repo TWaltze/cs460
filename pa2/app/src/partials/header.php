@@ -15,7 +15,7 @@
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
             <?php if(Auth::isLoggedIn()) { ?>
                 <ul class="nav navbar-nav">
-                    <li class="active"><a href="#">Home</a></li>
+                    <li class="active"><a href="/">Home</a></li>
                     <li><a href="/user.php?user=<?php echo Auth::loggedInAs(); ?>">My photos</a></li>
                     <li><a href="#">Create album</a></li>
                     <li><a href="#">Friends</a></li>
