@@ -1,5 +1,6 @@
 <?php
-require_once('../models/Photo.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/models/Photo.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/models/Auth.php");
 
 class PhotoCtrl {
     public static function create($album, $data, $caption = null) {
@@ -15,11 +16,20 @@ class PhotoCtrl {
     }
 
     public static function like($pid) {
-        $photo = Photo::find($pid);
+        if(!Auth::isLoggedIn()) {
+            return false;
+        }
 
-        return $photo->likeByUser(2);
+        $photo = Photo::find($pid);
+        $user = Auth::loggedInAs();
+
+        if($photo->likedByUser($user)) {
+            $photo->unlikeByUser($user);
+        } else {
+            $photo->likeByUser($user);
+        }
+
+        return true;
     }
 }
-
-var_dump(PhotoCtrl::like(10));
 ?>

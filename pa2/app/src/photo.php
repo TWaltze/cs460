@@ -3,6 +3,7 @@ require_once('lib/models/Auth.php');
 require_once('lib/models/Album.php');
 require_once('lib/models/Photo.php');
 require_once('lib/models/User.php');
+require_once('lib/controllers/PhotoCtrl.php');
 require_once('lib/utils/timeAgo.php');
 $id = intval(preg_replace('/\D/', '', $_GET['photo']));
 $photo = Photo::find($id);
@@ -10,6 +11,10 @@ $owner = User::find($photo->owner);
 $likes = $photo->getLikes();
 $comments = $photo->getComments();
 $tags = $photo->getTags();
+
+if(array_key_exists('like', $_GET)) {
+    PhotoCtrl::like($photo->getPID());
+}
 ?>
 <!DOCTYPE html>
 <html class="no-js">
@@ -39,6 +44,17 @@ $tags = $photo->getTags();
                 <li>Posted <?php echo $photo->timeAgo(); ?></li>
                 <li><?php echo count($likes); ?> likes</li>
                 <li><?php echo count($comments); ?> comments</li>
+
+                <?php if (Auth::isLoggedIn()) { ?>
+                    <?php
+                        if ($photo->likedByUser(Auth::loggedInAs())) {
+                            $likeStyle = "danger";
+                        } else {
+                            $likeStyle = "success";
+                        }
+                    ?>
+                    <li><a href="<?php echo "//$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>&like" class="btn btn-<?php echo $likeStyle; ?> btn" style="line-height: normal;" role="button"><i class="fa fa-thumbs-up fa-2x"></i></a></li>
+                <?php } ?>
             </ul>
             <ul class="list-inline">
                 <?php

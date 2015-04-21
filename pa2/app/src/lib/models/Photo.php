@@ -132,6 +132,26 @@ class Photo {
         return $this;
     }
 
+    public function unlikeByUser($uid) {
+        $db = new DBConnection();
+        $result = $db->query("DELETE FROM likes WHERE photo = ? AND user = ?", [
+            $this->pid,
+            $uid
+        ]);
+
+        return $this;
+    }
+
+    public function likedByUser($uid) {
+        $db = new DBConnection();
+        $result = $db->query("SELECT * FROM likes WHERE photo = ? AND user = ?", [
+            $this->pid,
+            $uid
+        ]);
+
+        return $result->rowCount() > 0;
+    }
+
     public function timeAgo() {
         return timeAgo($this->createdAt);
     }
