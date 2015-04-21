@@ -1,11 +1,12 @@
 <?php
 require_once("DBConnection.php");
 require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/models/Photo.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/models/User.php");
 
 class Search {
     public static function topUsers($amount) {
         $db = new DBConnection();
-        $result = $db->query("
+        $query = "
             SELECT uid, email, firstName, lastName, contribution
             FROM (SELECT user, SUM(sum_piece) as contribution
                 FROM (
@@ -22,8 +23,9 @@ class Search {
                 GROUP BY user
                 ORDER BY contribution DESC
                 LIMIT ?) as top_users
-            JOIN users on top_users.user = users.uid
-        ", [$amount]);
+            JOIN users on top_users.user = users.uid";
+
+        $result = $db->query($query, [$amount]);
 
         return $result->fetchAll();
     }
@@ -49,6 +51,22 @@ class Search {
 
         $result = $db->query($query, [$amount]);
         return $result->fetchAll();
+    }
+
+    public static function users($email) {
+        $db = new DBConnection();
+
+        $query = "SELECT * FROM users WHERE email = ?";
+
+        $result = $db->query($query, [$email]);
+        $users = $result->fetchAll();
+
+        $u = [];
+        foreach ($users as $user) {
+            $u[] = User::convertFromDBObject($user);
+        }
+
+        return $u;
     }
 
     public static function photosByTag($tag, $user = null) {

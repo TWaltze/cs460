@@ -18,7 +18,7 @@
                     <li class="active"><a href="/">Home</a></li>
                     <li><a href="/user.php?user=<?php echo Auth::loggedInAs(); ?>">My photos</a></li>
                     <li><a href="#">Create album</a></li>
-                    <li><a href="#">Friends</a></li>
+                    <li><a href="/friends.php">Friends</a></li>
                     <li><a href="/logout.php">Logout</a></li>
                 </ul>
             <?php } else { ?>

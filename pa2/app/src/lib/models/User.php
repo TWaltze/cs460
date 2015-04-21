@@ -199,8 +199,33 @@ class User {
         $db = new DBConnection();
         $result = $db->query("SELECT * FROM friends WHERE firstFriend = ? OR secondFriend = ?", [$this->uid, $this->uid]);
 
-        $friends = $result->fetchAll();
+        $relationships = $result->fetchAll();
+
+        $friends = [];
+        foreach ($relationships as $relationship) {
+            $friend = $relationship['firstFriend'] == $this->uid ? $relationship['secondFriend'] : $relationship['firstFriend'];
+            $friends[] = User::find($friend);
+        }
+
         return $friends;
+    }
+
+    public static function convertFromDBObject($obj) {
+        $user = new User();
+
+        $user->uid = $obj['uid'];
+        $user->email = $obj['email'];
+        $user->password = $obj['password'];
+        $user->firstName = $obj['firstName'];
+        $user->lastName = $obj['lastName'];
+        $user->dob = $obj['dob'];
+        $user->gender = $obj['gender'];
+        $user->city = $obj['city'];
+        $user->state = $obj['state'];
+        $user->country = $obj['country'];
+        $user->school = $obj['school'];
+
+        return $user;
     }
 }
 ?>
