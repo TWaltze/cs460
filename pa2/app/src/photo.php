@@ -60,7 +60,7 @@ $likes = $photo->getLikes();
                             $likeStyle = "success";
                         }
                     ?>
-                    <li><a href="<?php echo "//$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>&like" class="btn btn-<?php echo $likeStyle; ?> btn" style="line-height: normal;" role="button"><i class="fa fa-thumbs-up fa-2x"></i></a></li>
+                    <li><a href="<?php echo strtok($_SERVER["REQUEST_URI"],'?') . "?photo={$photo->getPID()}"; ?>&like" class="btn btn-<?php echo $likeStyle; ?> btn" style="line-height: normal;" role="button"><i class="fa fa-thumbs-up fa-2x"></i></a></li>
                 <?php } ?>
             </ul>
             <ul class="list-inline">

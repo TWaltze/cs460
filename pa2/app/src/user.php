@@ -69,7 +69,7 @@ if(array_key_exists('friend', $_GET)) {
                             }
                         ?>
 
-                        <a href="<?php echo "//$_SERVER[HTTP_HOST]$_SERVER[REQUEST_URI]"; ?>&friend" class="btn btn-<?php echo $friendStyle; ?> btn" style="line-height: normal;" role="button">
+                        <a href="<?php echo strtok($_SERVER["REQUEST_URI"],'?') . "?user={$user->getUID()}"; ?>&friend" class="btn btn-<?php echo $friendStyle; ?> btn" style="line-height: normal;" role="button">
                             <?php echo $friendText; ?>
                         </a>
 
