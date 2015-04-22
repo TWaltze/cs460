@@ -41,7 +41,7 @@ if(array_key_exists('friend', $_GET)) {
                         ?>
                         <div class="col-xs-4">
                             <div class="thumbnail">
-                                <a href="/album.php?album=<?php echo $album->getAID(); ?>"><img src="http://lorempixel.com/300/300/"></a>
+                                <a href="/album.php?album=<?php echo $album->getAID(); ?>"><img src="<?php echo $photos[0]->data; ?>"></a>
                                 <div class="caption">
                                     <h4><a href="/album.php?album=<?php echo $album->getAID(); ?>"><?php echo $album->name; ?></a></h4>
                                     <ul class="list-group">

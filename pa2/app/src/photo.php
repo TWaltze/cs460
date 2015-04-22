@@ -43,7 +43,7 @@ $likes = $photo->getLikes();
         <?php require('partials/alert.php'); ?>
 
         <div class="cover push-down">
-            <img class="img-responsive center-block" src="http://lorempixel.com/1500/500/">
+            <img class="img-responsive center-block" src="<?php echo $photo->data; ?>">
         </div>
         <div class="container">
             <p class="lead"><?php echo $photo->caption; ?></p>

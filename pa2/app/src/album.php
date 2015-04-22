@@ -31,7 +31,7 @@ $photos = $album->getPhotos();
                 <?php foreach ($photos as $key => $photo) { ?>
                     <div class="col-xs-3">
                         <div class="thumbnail">
-                            <a href="/photo.php?photo=<?php echo $photo->getPID(); ?>"><img src="http://lorempixel.com/300/300/"></a>
+                            <a href="/photo.php?photo=<?php echo $photo->getPID(); ?>"><img src="<?php echo $photo->data;?>"></a>
                             <div class="caption">
                                 <h4>by <a href="/user.php?user=<?php echo $owner->getUID(); ?>"><?php echo $owner->firstName; ?></a> <span class="label label-primary pull-right"><?php echo $photo->timeAgo(); ?></span></h4>
                                 <p><?php echo count($photo->getLikes()); ?> likes and <?php echo count($photo->getComments()); ?> comments<p>

@@ -4,7 +4,7 @@ require_once('lib/controllers/Search.php');
 require_once('lib/models/Photo.php');
 require_once('lib/models/User.php');
 
-$topUsers = Search::topUsers(12);
+$topUsers = Search::topUsers(10);
 $popularPhotos = Search::popularPhotos(3);
 $popularTags = Search::popularTags(10);
 ?>
@@ -29,11 +29,13 @@ $popularTags = Search::popularTags(10);
         <div class="cover">
             <?php foreach ($topUsers as $key => $user) { ?>
                 <div class="cover__item">
-                    <img src="http://lorempixel.com/300/300/" />
+                    <div class="background">
+                        <img src="<?php echo $user->getPhotos()[0]->data; ?>" />
+                    </div>
                     <div class="cover__item__info">
                         <div class="cover__item__info--vertical-align">
                             <h1>#<?php echo $key + 1; ?></h1>
-                            <h3><a href="/user.php?user=<?php echo $user['uid']; ?>"><?php echo $user['firstName']; ?></a></h3>
+                            <h3><a href="/user.php?user=<?php echo $user->getUID(); ?>"><?php echo $user->firstName; ?></a></h3>
                         </div>
                     </div>
                 </div>
@@ -51,7 +53,7 @@ $popularTags = Search::popularTags(10);
                         ?>
                         <div class="col-xs-4">
                             <div class="thumbnail">
-                                <a href="/photo.php?photo=<?php echo $p->getPID(); ?>"><img src="http://lorempixel.com/300/300/"></a>
+                                <a href="/photo.php?photo=<?php echo $p->getPID(); ?>"><img src="<?php echo $p->data; ?>"></a>
                                 <div class="caption">
                                     <h4>by <a href="/user.php?user=<?php echo $user->getUID(); ?>"><?php echo $user->firstName; ?></a> <span class="label label-primary pull-right">4 hours ago</span></h4>
                                     <p><?php echo count($p->getLikes()); ?> likes and <?php echo count($p->getComments()); ?> comments<p>

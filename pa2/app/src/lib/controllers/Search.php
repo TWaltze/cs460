@@ -7,7 +7,7 @@ class Search {
     public static function topUsers($amount) {
         $db = new DBConnection();
         $query = "
-            SELECT uid, email, firstName, lastName, contribution
+            SELECT *
             FROM (SELECT user, SUM(sum_piece) as contribution
                 FROM (
                 	SELECT owner as user, COUNT(*) as sum_piece
@@ -27,7 +27,14 @@ class Search {
 
         $result = $db->query($query, [$amount]);
 
-        return $result->fetchAll();
+        $users = $result->fetchAll();
+
+        $u = [];
+        foreach ($users as $user) {
+            $u[] = User::convertFromDBObject($user);
+        }
+
+        return $u;
     }
 
     public static function popularPhotos($amount) {
