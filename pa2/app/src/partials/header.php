@@ -17,7 +17,7 @@
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="/">Home</a></li>
                     <li><a href="/user.php?user=<?php echo Auth::loggedInAs(); ?>">My photos</a></li>
-                    <li><a href="#">Create album</a></li>
+                    <li><a href="/upload.php">Upload Photo</a></li>
                     <li><a href="/friends.php">Friends</a></li>
                     <li><a href="/logout.php">Logout</a></li>
                 </ul>
@@ -30,7 +30,7 @@
             <?php } ?>
             <form action="/search.php" class="navbar-form navbar-right" role="search">
                 <div class="form-group">
-                    <input type="text" name="tag" class="form-control" placeholder="tags">
+                    <input type="text" name="tag" class="form-control" placeholder="tag">
                 </div>
                 <button type="submit" class="btn btn-default">Search</button>
             </form>

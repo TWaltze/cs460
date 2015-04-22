@@ -5,6 +5,7 @@ require_once('lib/models/Photo.php');
 require_once('lib/models/User.php');
 require_once('lib/controllers/PhotoCtrl.php');
 require_once('lib/utils/timeAgo.php');
+
 $id = intval(preg_replace('/\D/', '', $_GET['photo']));
 $photo = Photo::find($id);
 $owner = User::find($photo->owner);

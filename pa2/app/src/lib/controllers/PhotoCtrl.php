@@ -1,19 +1,44 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/models/Photo.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/models/Album.php");
 require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/models/Auth.php");
 require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/models/Alert.php");
+require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/utils/Uploader.php");
 
 class PhotoCtrl {
-    public static function create($album, $data, $caption = null) {
+    public static function create($aid, $albumTitle, $image, $caption = null) {
+        if(!Auth::isLoggedIn()) {
+            return new Alert("danger", "You must be logged in to like a photo.");
+        }
+
+        $user = Auth::loggedInAs();
+
+        // User is making a new album
+        if(intval($aid) == 0) {
+            $album = new Album();
+            $album->name = $albumTitle;
+            $album->owner = $user;
+
+            $album->create();
+
+            $aid = $album->getAID();
+        }
+
         $photo = new Photo();
-        $photo->album = $album;
-        $photo->owner = 1;
-        $photo->data = $data;
+        $photo->album = $aid;
+        $photo->owner = $user;
         $photo->caption = $caption;
 
-        $response = $photo->create();
+        try {
+            $uploader = new Uploader($image);
+            $photo->data = $uploader->upload();
+        } catch(Exception $e) {
+            return new Alert("danger", $e->getMessage());
+        }
 
-        return $photo->getPID();
+        $photo->create();
+
+        return new Alert("success", "That's a great photo!");
     }
 
     public static function like($pid) {
