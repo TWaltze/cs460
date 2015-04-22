@@ -58,7 +58,13 @@ if($_POST) {
                     <textarea class="form-control" rows="3" placeholder="caption" name="caption"></textarea>
                 </div>
                 <div class="form-group form-group-lg">
-                    <input type="text" name="tags" class="form-control" placeholder="tag1, tag2, tag3">
+                    <input type="text" name="tags" id="tags" class="form-control" placeholder="tag1, tag2, tag3">
+                </div>
+                <div class="form-group form-group-lg">
+                    <div class="col-xs-4" style="margin-left: 0; margin-right: 0; padding-left: 0;">
+                        <button class="recommendTags btn btn-lg btn-block btn-success pull-right">Recommend Tags</button>
+                    </div>
+                    <div class="col-xs-8 tag-cloud" style="margin-left: 0; padding-right: 0;"></div>
                 </div>
                 <div class="form-group form-group-lg">
                     <button type="submit" class="btn btn-lg btn-block btn-primary pull-right">Upload</button>
@@ -74,6 +80,32 @@ if($_POST) {
 
         <script src="js/vendor/lodash.min.js"></script>
         <script src="js/main.js"></script>
+
+        <script>
+        $(document).ready(function() {
+            $(".recommendTags").click(function(event) {
+                event.preventDefault();
+
+                $.getJSON("recommendTags.php?tags=" + $("#tags").val(), function(data) {
+                    console.log(data);
+                    var tags = [];
+                    $.each(data, function(key, val) {
+                        tags.push( "<button class='tag-cloud__tag' value='" + val + "'>" + val + "</button>" );
+                    });
+
+                    $(".tag-cloud").html(tags);
+                });
+            });
+
+            $(".tag-cloud").on("click", ".tag-cloud__tag", function(event) {
+                event.preventDefault();
+
+                var tag = $(this).val();
+                var currentTags = $("#tags").val();
+                $("#tags").val(currentTags + ", " + tag);
+            });
+        });
+        </script>
 
         <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
         <script>
