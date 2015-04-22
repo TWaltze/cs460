@@ -11,7 +11,7 @@ $albums = $user->getAlbums();
 $alert = null;
 
 if($_POST) {
-    $alert = PhotoCtrl::create($_POST['album'], $_POST['newAlbum'], $_FILES['picture'], $_POST['caption']);
+    $alert = PhotoCtrl::create($_POST['album'], $_POST['newAlbum'], $_FILES['picture'], $_POST['caption'], $_POST['tags']);
 }
 ?>
 <!DOCTYPE html>
@@ -56,6 +56,9 @@ if($_POST) {
                 </div>
                 <div class="form-group">
                     <textarea class="form-control" rows="3" placeholder="caption" name="caption"></textarea>
+                </div>
+                <div class="form-group form-group-lg">
+                    <input type="text" name="tags" class="form-control" placeholder="tag1, tag2, tag3">
                 </div>
                 <div class="form-group form-group-lg">
                     <button type="submit" class="btn btn-lg btn-block btn-primary pull-right">Upload</button>

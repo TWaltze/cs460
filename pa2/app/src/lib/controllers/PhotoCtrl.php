@@ -6,7 +6,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/models/Alert.php");
 require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/utils/Uploader.php");
 
 class PhotoCtrl {
-    public static function create($aid, $albumTitle, $image, $caption = null) {
+    public static function create($aid, $albumTitle, $image, $caption = null, $tags = null) {
         if(!Auth::isLoggedIn()) {
             return new Alert("danger", "You must be logged in to like a photo.");
         }
@@ -15,6 +15,10 @@ class PhotoCtrl {
 
         // User is making a new album
         if(intval($aid) == 0) {
+            if(!trim($albumTitle)) {
+                return new Alert("danger", "You must select an album.");
+            }
+
             $album = new Album();
             $album->name = $albumTitle;
             $album->owner = $user;
@@ -37,6 +41,12 @@ class PhotoCtrl {
         }
 
         $photo->create();
+
+        // Add tags
+        $tags = explode(",", $tags);
+        foreach($tags as $tag) {
+            $photo->addTag($tag);
+        }
 
         return new Alert("success", "That's a great photo!");
     }
