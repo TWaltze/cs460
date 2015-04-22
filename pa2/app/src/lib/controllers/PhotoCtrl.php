@@ -45,13 +45,61 @@ class PhotoCtrl {
         // Save photo to db
         $photo->create();
 
+        // Spit comma deliminated string of tags into array
+        $tags = explode(",", preg_replace('/\s+/', '', $tags));
         // Add tags
-        $tags = explode(",", $tags);
         foreach($tags as $tag) {
-            $photo->addTag(trim($tag));
+            $photo->addTag($tag);
         }
 
         return new Alert("success", "That's a great photo!");
+    }
+
+    public static function recommendTags($string, $amount = 5) {
+        $db = new DBConnection();
+
+        // Spit comma deliminated string of tags into array
+        $tags = explode(",", preg_replace('/\s+/', '', $string));
+
+        // Generate SQL WHERE clause
+        $tagWhere = [];
+        $params = [];
+        foreach($tags as $tag) {
+            $tagWhere[] = "tag = ?";
+            $params[] = $tag;
+        }
+        $tagWhere = implode(" OR ", $tagWhere);
+
+        // Find tags frequently used with the supplied tags
+        $tagQuery = "
+            SELECT *, COUNT(*) tagScore
+            FROM
+                (SELECT photo, COUNT(*) as tagCount
+                FROM tags
+                WHERE $tagWhere
+                GROUP BY photo) as similarPhotos JOIN tags ON similarPhotos.photo = tags.photo
+            GROUP BY tag
+            ORDER BY tagScore DESC
+            LIMIT ?
+        ";
+
+        // Result set will contain the supplied tags.
+        // In order to get X new, recommended tags, you need
+        // to search for X + {the number of tags supplied to search}
+        $params[] = $amount + count($tags);
+
+        $result = $db->query($tagQuery, $params);
+        $frequentTags = $result->fetchAll();
+
+        // Remove supplied tags from frequent result set
+        $recommended = [];
+        foreach($frequentTags as $tag) {
+            if(!in_array($tag['tag'], $tags)) {
+                $recommended[] = $tag['tag'];
+            }
+        }
+
+        return $recommended;
     }
 
     public static function like($pid) {
