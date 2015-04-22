@@ -68,7 +68,7 @@ $albums = $user->getAlbums();
                 <h2>
                     Profile
 
-                    <?php if (Auth::isLoggedIn()) { ?>
+                    <?php if (Auth::isLoggedIn() && Auth::loggedInAs() != $user->getUID()) { ?>
                         <?php
                             if ($user->isFriendsWith(Auth::loggedInAs())) {
                                 $friendStyle = "danger";

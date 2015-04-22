@@ -48,7 +48,7 @@ class PhotoCtrl {
         // Add tags
         $tags = explode(",", $tags);
         foreach($tags as $tag) {
-            $photo->addTag($tag);
+            $photo->addTag(trim($tag));
         }
 
         return new Alert("success", "That's a great photo!");

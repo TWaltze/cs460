@@ -69,7 +69,7 @@ $likes = $photo->getLikes();
                     <li><a href="<?php echo strtok($_SERVER["REQUEST_URI"],'?') . "?photo={$photo->getPID()}"; ?>&like" class="btn btn-<?php echo $likeStyle; ?>" style="line-height: normal;" role="button"><i class="fa fa-thumbs-up fa-2x"></i></a></li>
                 <?php } ?>
 
-                <?php if ($owner->getUID() == Auth::loggedInAs()) { ?>
+                <?php if (Auth::isLoggedIn() && $owner->getUID() == Auth::loggedInAs()) { ?>
                     <li><a href="<?php echo strtok($_SERVER["REQUEST_URI"],'?') . "?photo={$photo->getPID()}"; ?>&delete" class="btn btn-danger" style="line-height: normal;" role="button"><i class="fa fa-trash fa-2x"></i></a></li>
                 <?php } ?>
             </ul>
