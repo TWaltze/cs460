@@ -45,6 +45,21 @@ class Photo {
         return $this;
     }
 
+    public function delete() {
+        $db = new DBConnection();
+
+        // Delete this photo's tags
+        $deleteComments = $db->query("DELETE FROM tags WHERE photo = ?", [$this->pid]);
+
+        // Delete this photo's comments
+        $deleteComments = $db->query("DELETE FROM comments WHERE photo = ?", [$this->pid]);
+
+        // Delete photo
+        $deletePhoto = $db->query("DELETE FROM photos WHERE pid = ?", [$this->pid]);
+
+        return true;
+    }
+
     public static function find($pid) {
         $db = new DBConnection();
         $result = $db->query("SELECT * FROM photos WHERE pid = ?", [$pid]);

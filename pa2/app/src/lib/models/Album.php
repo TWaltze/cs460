@@ -42,7 +42,16 @@ class Album {
 
     public function delete() {
         $db = new DBConnection();
-        $deletePhotos = $db->query("DELETE FROM photos WHERE album = ?", [$this->aid]);
+
+        // Delete this album's photos and all comments/tags related to those photos
+        $result = $db->query("SELECT * FROM photos WHERE album = ?", [$this->aid]);
+        $memberPhotos = $result->fetchAll();
+        foreach($memberPhotos as $photo) {
+            $p = Photo::convertFromDBObject($photo);
+            $p->delete();
+        }
+
+        // Delete album
         $deleteAlbum = $db->query("DELETE FROM albums WHERE aid = ?", [$this->aid]);
 
         return true;

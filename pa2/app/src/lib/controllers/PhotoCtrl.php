@@ -28,11 +28,13 @@ class PhotoCtrl {
             $aid = $album->getAID();
         }
 
+        // Set properties
         $photo = new Photo();
         $photo->album = $aid;
         $photo->owner = $user;
         $photo->caption = $caption;
 
+        // Upload image
         try {
             $uploader = new Uploader($image);
             $photo->data = $uploader->upload();
@@ -40,6 +42,7 @@ class PhotoCtrl {
             return new Alert("danger", $e->getMessage());
         }
 
+        // Save photo to db
         $photo->create();
 
         // Add tags

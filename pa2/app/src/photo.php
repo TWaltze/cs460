@@ -16,6 +16,11 @@ if(array_key_exists('like', $_GET)) {
     $alert = PhotoCtrl::like($photo->getPID());
 }
 
+if(array_key_exists('delete', $_GET) && $owner->getUID() == Auth::loggedInAs()) {
+    $photo->delete();
+    header("Location: /album.php?album={$photo->album}");
+}
+
 if(array_key_exists('comment', $_POST)) {
     $alert = PhotoCtrl::comment($photo->getPID(), $_POST['comment']);
 }
@@ -61,7 +66,11 @@ $likes = $photo->getLikes();
                             $likeStyle = "success";
                         }
                     ?>
-                    <li><a href="<?php echo strtok($_SERVER["REQUEST_URI"],'?') . "?photo={$photo->getPID()}"; ?>&like" class="btn btn-<?php echo $likeStyle; ?> btn" style="line-height: normal;" role="button"><i class="fa fa-thumbs-up fa-2x"></i></a></li>
+                    <li><a href="<?php echo strtok($_SERVER["REQUEST_URI"],'?') . "?photo={$photo->getPID()}"; ?>&like" class="btn btn-<?php echo $likeStyle; ?>" style="line-height: normal;" role="button"><i class="fa fa-thumbs-up fa-2x"></i></a></li>
+                <?php } ?>
+
+                <?php if ($owner->getUID() == Auth::loggedInAs()) { ?>
+                    <li><a href="<?php echo strtok($_SERVER["REQUEST_URI"],'?') . "?photo={$photo->getPID()}"; ?>&delete" class="btn btn-danger" style="line-height: normal;" role="button"><i class="fa fa-trash fa-2x"></i></a></li>
                 <?php } ?>
             </ul>
             <ul class="list-inline">

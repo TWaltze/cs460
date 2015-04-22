@@ -5,12 +5,17 @@ require_once('lib/controllers/UserCtrl.php');
 
 $id = intval(preg_replace('/\D/', '', $_GET['user']));
 $user = User::find($id);
-$albums = $user->getAlbums();
 $alert = null;
 
 if(array_key_exists('friend', $_GET)) {
     $alert = UserCtrl::friend($user->getUID());
 }
+
+if(array_key_exists('delete', $_GET)) {
+    $alert = UserCtrl::deleteAlbum($_GET['delete']);
+}
+
+$albums = $user->getAlbums();
 ?>
 <!DOCTYPE html>
 <html class="no-js">
@@ -47,6 +52,11 @@ if(array_key_exists('friend', $_GET)) {
                                     <ul class="list-group">
                                         <li class="list-group-item">Created <?php echo $album->timeAgo(); ?></li>
                                         <li class="list-group-item">Contains <?php echo count($photos); ?> photos</li>
+                                        <li class="list-group-item">
+                                            <a href="?user=<?php echo $user->getUID(); ?>&delete=<?php echo $album->getAID();?>" class="btn btn-danger btn-block">
+                                                Delete
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>

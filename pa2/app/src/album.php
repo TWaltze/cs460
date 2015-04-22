@@ -3,6 +3,7 @@ require_once('lib/models/Auth.php');
 require_once('lib/models/Album.php');
 require_once('lib/models/User.php');
 $id = intval(preg_replace('/\D/', '', $_GET['album']));
+
 $album = Album::find($id);
 $owner = User::find($album->owner);
 $photos = $album->getPhotos();

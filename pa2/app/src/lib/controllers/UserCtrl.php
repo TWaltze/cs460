@@ -64,5 +64,20 @@ class UserCtrl {
             return new Alert("success", "You friended {$user->firstName}.");
         }
     }
+
+    public static function deleteAlbum($aid) {
+        if(!Auth::isLoggedIn()) {
+            return new Alert("danger", "You must be logged in to delete an album.");
+        }
+
+        $album = Album::find($aid);
+
+        if($album->owner == Auth::loggedInAs()) {
+            $album->delete();
+            return new Alert("success", "You deleted the album {$album->name}.");
+        } else {
+            return new Alert("danger", "You can only delete albums you own.");
+        }
+    }
 }
 ?>
