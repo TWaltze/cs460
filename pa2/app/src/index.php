@@ -5,7 +5,7 @@ require_once('lib/models/Photo.php');
 require_once('lib/models/User.php');
 
 $topUsers = Search::topUsers(10);
-$popularPhotos = Search::popularPhotos(3);
+$popularPhotos = Search::popularPhotos(6);
 $popularTags = Search::popularTags(10);
 ?>
 <!DOCTYPE html>
@@ -62,7 +62,7 @@ $popularTags = Search::popularTags(10);
                             <div class="thumbnail">
                                 <a href="/photo.php?photo=<?php echo $p->getPID(); ?>"><img src="<?php echo $p->data; ?>"></a>
                                 <div class="caption">
-                                    <h4>by <a href="/user.php?user=<?php echo $user->getUID(); ?>"><?php echo $user->firstName; ?></a> <span class="label label-primary pull-right">4 hours ago</span></h4>
+                                    <h4>by <a href="/user.php?user=<?php echo $user->getUID(); ?>"><?php echo $user->firstName; ?></a> <span class="label label-primary pull-right"><?php echo $p->timeAgo(); ?></span></h4>
                                     <p><?php echo count($p->getLikes()); ?> likes and <?php echo count($p->getComments()); ?> comments<p>
                                     <p>
                                         <?php

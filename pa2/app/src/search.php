@@ -4,7 +4,14 @@ require_once('lib/controllers/Search.php');
 require_once('lib/models/User.php');
 $tag = array_key_exists('tag', $_GET) ? preg_replace("/[^A-Za-z0-9 ]/", '', $_GET['tag']) : "%";
 $myAccount = array_key_exists('myAccount', $_GET) ? preg_replace("/[^A-Za-z0-9 ]/", '', $_GET['myAccount']) : null;
-$photos = Search::photosByTag($tag);
+
+if(array_key_exists('mine', $_GET)) {
+    $user = Auth::loggedInAs();
+} else {
+    $user = null;
+}
+
+$photos = Search::photosByTag($tag, $user);
 ?>
 <!DOCTYPE html>
 <html class="no-js">
@@ -26,6 +33,13 @@ $photos = Search::photosByTag($tag);
 
         <div class="container">
             <h2>Search for <?php echo $tag; ?></h2>
+            <div class="btn-group vertical-rhythm">
+                <a href="/search.php?tag=<?php echo $tag; ?>" class="btn btn-default">All Photos</a>
+
+                <?php if(Auth::isLoggedIn()) { ?>
+                    <a href="/search.php?tag=<?php echo $tag; ?>&mine" class="btn btn-default">My Photos</a>
+                <?php } ?>
+            </div>
             <div class="row">
                 <?php foreach ($photos as $key => $photo) { ?>
                     <?php

@@ -79,7 +79,7 @@ class Search {
     public static function photosByTag($tag, $user = null) {
         $db = new DBConnection();
 
-        $query = "SELECT * FROM photos JOIN tags ON tags.photo = photos.pid WHERE tag LIKE ? ORDER BY createdAt DESC";
+        $query = "SELECT * FROM photos JOIN tags ON tags.photo = photos.pid WHERE tag LIKE ?";
         $params = [$tag];
 
         // Allow filtering by user
@@ -87,6 +87,8 @@ class Search {
             $query .= " AND owner = ?";
             $params[] = $user;
         }
+
+        $query .= " ORDER BY createdAt DESC";
 
         $result = $db->query($query, $params);
         $photos = $result->fetchAll();
