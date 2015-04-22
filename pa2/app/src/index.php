@@ -29,9 +29,16 @@ $popularTags = Search::popularTags(10);
         <div class="cover">
             <?php foreach ($topUsers as $key => $user) { ?>
                 <div class="cover__item">
-                    <div class="background">
-                        <img src="<?php echo $user->getPhotos()[0]->data; ?>" />
-                    </div>
+                    <?php
+                        $userPhotos = $user->getPhotos();
+
+                        if(!empty($userPhotos)) {
+                            echo "
+                            <div class='cover__item__background'>
+                                <img src='{$userPhotos[0]->data}' />
+                            </div>";
+                        }
+                    ?>
                     <div class="cover__item__info">
                         <div class="cover__item__info--vertical-align">
                             <h1>#<?php echo $key + 1; ?></h1>
