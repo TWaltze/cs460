@@ -48,7 +48,14 @@ class Search {
             ORDER BY likes DESC LIMIT ?";
 
         $result = $db->query($query, [$amount]);
-        return $result->fetchAll();
+        $photos = $result->fetchAll();
+
+        $p = [];
+        foreach ($photos as $photo) {
+            $p[] = Photo::find($photo['pid']);
+        }
+
+        return $p;
     }
 
     public static function popularTags($amount) {

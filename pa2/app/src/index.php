@@ -5,7 +5,17 @@ require_once('lib/models/Photo.php');
 require_once('lib/models/User.php');
 
 $topUsers = Search::topUsers(10);
-$popularPhotos = Search::popularPhotos(6);
+
+$recommendedPhotos = [];
+if(Auth::isLoggedIn()) {
+    $activeUser = User::find(Auth::loggedInAs());
+    $recommendedPhotos = $activeUser->getRecommendedPhotos(6);
+}
+
+if(empty($recommendedPhotos)) {
+    $recommendedPhotos = Search::popularPhotos(6);
+}
+
 $popularTags = Search::popularTags(10);
 ?>
 <!DOCTYPE html>
@@ -53,20 +63,19 @@ $popularTags = Search::popularTags(10);
             <div class="col-xs-8">
                 <h2>You may like these photos</h2>
                 <div class="row">
-                    <?php foreach ($popularPhotos as $key => $photo) { ?>
+                    <?php foreach ($recommendedPhotos as $photo) { ?>
                         <?php
-                            $p = Photo::find($photo['pid']);
-                            $user = User::find($photo['owner']);
+                            $user = User::find($photo->owner);
                         ?>
                         <div class="col-xs-4">
                             <div class="thumbnail">
-                                <a href="/photo.php?photo=<?php echo $p->getPID(); ?>"><img src="<?php echo $p->data; ?>"></a>
+                                <a href="/photo.php?photo=<?php echo $photo->getPID(); ?>"><img src="<?php echo $photo->data; ?>"></a>
                                 <div class="caption">
-                                    <h4>by <a href="/user.php?user=<?php echo $user->getUID(); ?>"><?php echo $user->firstName; ?></a> <span class="label label-primary pull-right"><?php echo $p->timeAgo(); ?></span></h4>
-                                    <p><?php echo count($p->getLikes()); ?> likes and <?php echo count($p->getComments()); ?> comments<p>
+                                    <h4>by <a href="/user.php?user=<?php echo $user->getUID(); ?>"><?php echo $user->firstName; ?></a> <span class="label label-primary pull-right"><?php echo $photo->timeAgo(); ?></span></h4>
+                                    <p><?php echo count($photo->getLikes()); ?> likes and <?php echo count($photo->getComments()); ?> comments<p>
                                     <p>
                                         <?php
-                                        foreach ($p->getTags() as $tag) {
+                                        foreach ($photo->getTags() as $tag) {
                                             echo "<a href='/search.php?tag={$tag['tag']}' class='label label-default'>{$tag['tag']}</a> ";
                                         }
                                         ?>

@@ -144,6 +144,52 @@ class User {
         return $p;
     }
 
+    public function getRecommendedPhotos($amount) {
+        $db = new DBConnection();
+
+        // Find this user's 5 most used tags
+        $tagQuery = "
+            SELECT tag, COUNT(*) as count
+            FROM tags JOIN photos ON tags.photo = photos.pid
+            WHERE owner = ?
+            GROUP BY tags.tag
+            ORDER BY count DESC
+            LIMIT 5
+        ";
+
+        $result = $db->query($tagQuery, [$this->uid]);
+        $topTags = $result->fetchAll();
+
+        // Generate SQL WHERE clause
+        $tagWhere = [];
+        $params = [];
+        foreach($topTags as $tag) {
+            $tagWhere[] = "tag = ?";
+            $params[] = $tag['tag'];
+        }
+        $tagWhere = implode(" OR ", $tagWhere);
+
+        $photoQuery = "
+            SELECT pid, COUNT(*) as count
+            FROM tags JOIN photos ON tags.photo = photos.pid
+            WHERE $tagWhere
+            GROUP BY photos.pid
+            ORDER BY count DESC
+            LIMIT ?
+        ";
+
+        $params[] = $amount;
+        $result = $db->query($photoQuery, $params);
+        $photos = $result->fetchAll();
+
+        $p = [];
+        foreach ($photos as $photo) {
+            $p[] = Photo::find($photo['pid']);
+        }
+
+        return $p;
+    }
+
     public function getComments() {
         $db = new DBConnection();
         $result = $db->query("SELECT * FROM comments WHERE author = ?", [$this->uid]);
