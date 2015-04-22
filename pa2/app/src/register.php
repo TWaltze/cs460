@@ -1,15 +1,15 @@
 <?php
 require_once('lib/controllers/UserCtrl.php');
 
-$error = null;
 $email = array_key_exists('email', $_POST) ? $_POST['email'] : null;
 $first = array_key_exists('first', $_POST) ? $_POST['first'] : null;
 $last = array_key_exists('last', $_POST) ? $_POST['last'] : null;
 $dob = array_key_exists('dob', $_POST) ? $_POST['dob'] : null;
 $password = array_key_exists('password', $_POST) ? $_POST['password'] : null;
+$alert = null;
 
 if($_POST) {
-    $error = UserCtrl::create(
+    $alert = UserCtrl::create(
         $email,
         $password,
         $first,
@@ -35,6 +35,7 @@ if($_POST) {
     </head>
     <body>
         <?php require('partials/header.php'); ?>
+        <?php require_once('partials/alert.php'); ?>
 
         <div class="container">
             <form method="post" class="login-form form-horizontal col-sm-6 col-md-offset-3">
@@ -56,14 +57,7 @@ if($_POST) {
                     <input type="password" name="password" class="form-control" placeholder="Password">
                 </div>
                 <div class="form-group form-group-lg">
-                    <?php if ($error) {?>
-                        <div class="alert alert-danger col-sm-8" role="alert"><?php echo $error; ?></div>
-                    <?php } else { ?>
-                        <div class="col-sm-8" role="alert"></div>
-                    <?php } ?>
-                    <div class="col-sm-4 button-container">
-                        <button type="submit" class="btn btn-block btn-lg btn-primary pull-right">Register</button>
-                    </div>
+                    <button type="submit" class="btn btn-lg btn-block btn-primary pull-right">Register</button>
                 </div>
             </form>
         </div>

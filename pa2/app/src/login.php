@@ -1,9 +1,9 @@
 <?php
 require_once('lib/controllers/UserCtrl.php');
 
-$error = null;
+$alert = null;
 if($_POST) {
-    $error = UserCtrl::login($_POST['email'], $_POST['password']);
+    $alert = UserCtrl::login($_POST['email'], $_POST['password']);
 }
 ?>
 <!DOCTYPE html>
@@ -23,6 +23,7 @@ if($_POST) {
     </head>
     <body>
         <?php require_once('partials/header.php'); ?>
+        <?php require_once('partials/alert.php'); ?>
 
         <div class="container">
             <form method="post" class="login-form form-horizontal col-sm-6 col-md-offset-3">
@@ -33,14 +34,7 @@ if($_POST) {
                     <input type="password" name="password" class="form-control" id="inputPassword3" placeholder="Password">
                 </div>
                 <div class="form-group form-group-lg">
-                    <?php if ($error) {?>
-                        <div class="alert alert-danger col-sm-8" role="alert"><?php echo $error; ?></div>
-                    <?php } else { ?>
-                        <div class="col-sm-8" role="alert"></div>
-                    <?php } ?>
-                    <div class="col-sm-4 button-container">
-                        <button type="submit" class="btn btn-lg btn-block btn-primary pull-right">Login</button>
-                    </div>
+                    <button type="submit" class="btn btn-lg btn-block btn-primary pull-right">Login</button>
                 </div>
             </form>
         </div>

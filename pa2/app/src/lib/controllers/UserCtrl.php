@@ -6,11 +6,11 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/models/Alert.php");
 class UserCtrl {
     public static function create($email, $password, $firstName, $lastName, $dob) {
         if(!trim($email) || !trim($password) || !trim($firstName) || !trim($lastName) || !trim($dob)) {
-            return "All fields are required.";
+            return new Alert("danger", "All fields are required.");
         }
 
         if(!filter_var($email, FILTER_VALIDATE_EMAIL)) {
-			return "Invalid email.";
+            return new Alert("danger", "Invalid email.");
 		}
 
         $user = new User();
@@ -26,20 +26,20 @@ class UserCtrl {
             Auth::authenticate($email, $password);
             header('Location: /index.php');
         } catch(Exception $e) {
-            return $e->getMessage();
+            return new Alert("danger", $e->getMessage());
         }
     }
 
     public static function login($email, $password) {
         if(!trim($email)) {
-            return "Missing email.";
+            return new Alert("danger", "Missing email.");
         } else if(!trim($password)) {
-            return "Missing password.";
+            return new Alert("danger", "Missing password.");
         } else {
             $auth = Auth::authenticate($email, $password);
 
             if(!$auth) {
-                return "Invalid username or password.";
+                return new Alert("danger", "Invalid username or password.");
             } else {
                 header('Location: /index.php');
             }
