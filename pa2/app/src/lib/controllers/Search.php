@@ -20,10 +20,10 @@ class Search {
                 	FROM comments
                 	GROUP BY author
                 ) as total_points
-                GROUP BY user
-                ORDER BY contribution DESC
-                LIMIT ?) as top_users
-            JOIN users on top_users.user = users.uid";
+                GROUP BY user) as top_users
+            JOIN users on top_users.user = users.uid
+            ORDER BY contribution DESC
+            LIMIT ?";
 
         $result = $db->query($query, [$amount]);
 
