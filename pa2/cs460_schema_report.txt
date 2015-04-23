@@ -6,12 +6,12 @@ Schema Report
 
 
 Database contains 6 tables.
-* users: Registered users. Only required fields are an email and password (hashed).
+* users: Registered users. Only required fields are email, password (hashed), first and last name, and dob.
 * photos: Uploaded photos. Each photo has an upload date, belongs to an album (aid), and belongs to a user (uid).
 * albums: All the albums. Each album is assigned an aid and belongs to a user (uid).
 * tags: Each tag attached to a photo (pid). Each tag gets its own record.
 * friends: List of all friendships. Each friendship gets a single row and there is no distinction between which user is firstFriend (uid) or secondFriend (uid)
-* comments: All comments. Each comment is attached to a photo (pid) and author (uid)
+* comments: All comments. Each comment is attached to a photo (pid) and author (uid), though author is not required.
 
 
 Assumptions:
