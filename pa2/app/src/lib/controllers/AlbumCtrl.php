@@ -4,7 +4,7 @@ require_once($_SERVER['DOCUMENT_ROOT'] . "/lib/models/Album.php");
 class AlbumCtrl {
     public static function create($name) {
         if(!Auth::isLoggedIn()) {
-            return new Alert("danger", "You must be logged in to like a photo.");
+            return new Alert("danger", "You must be logged in to create an album.");
         }
 
         $album = new Album();
