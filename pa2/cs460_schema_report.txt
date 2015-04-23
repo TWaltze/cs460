@@ -21,7 +21,7 @@ Assumptions:
    * photos.caption
    * photos.data
    * tags.tag
-* Photos will be stored in a file system, and their links will be stored in photos.data. 
+* Photos will be stored in a file system, and their links will be stored in photos.data.
 
 
 # ************************************************************
@@ -33,10 +33,8 @@ Assumptions:
 #
 # Host: 127.0.0.1 (MySQL 5.5.38)
 # Database: picshare
-# Generation Time: 2015-04-08 18:19:53 +0000
+# Generation Time: 2015-04-22 16:52:30 +0000
 # ************************************************************
-
-
 
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
@@ -48,14 +46,10 @@ Assumptions:
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 
-
-
 # Dump of table albums
 # ------------------------------------------------------------
 
-
 DROP TABLE IF EXISTS `albums`;
-
 
 CREATE TABLE `albums` (
   `aid` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -69,15 +63,10 @@ CREATE TABLE `albums` (
 
 
 
-
-
-
 # Dump of table comments
 # ------------------------------------------------------------
 
-
 DROP TABLE IF EXISTS `comments`;
-
 
 CREATE TABLE `comments` (
   `cid` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -94,15 +83,10 @@ CREATE TABLE `comments` (
 
 
 
-
-
-
 # Dump of table friends
 # ------------------------------------------------------------
 
-
 DROP TABLE IF EXISTS `friends`;
-
 
 CREATE TABLE `friends` (
   `fid` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -111,21 +95,16 @@ CREATE TABLE `friends` (
   PRIMARY KEY (`fid`),
   KEY `firstFriend` (`firstFriend`),
   KEY `secondFriend` (`secondFriend`),
-  CONSTRAINT `friends_ibfk_2` FOREIGN KEY (`secondFriend`) REFERENCES `users` (`uid`),
-  CONSTRAINT `friends_ibfk_1` FOREIGN KEY (`firstFriend`) REFERENCES `users` (`uid`)
+  CONSTRAINT `friends_ibfk_1` FOREIGN KEY (`firstFriend`) REFERENCES `users` (`uid`),
+  CONSTRAINT `friends_ibfk_2` FOREIGN KEY (`secondFriend`) REFERENCES `users` (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
 
 
 
 # Dump of table likes
 # ------------------------------------------------------------
 
-
 DROP TABLE IF EXISTS `likes`;
-
 
 CREATE TABLE `likes` (
   `lid` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -134,21 +113,16 @@ CREATE TABLE `likes` (
   PRIMARY KEY (`lid`),
   KEY `photo` (`photo`),
   KEY `user` (`user`),
-  CONSTRAINT `likes_ibfk_2` FOREIGN KEY (`user`) REFERENCES `users` (`uid`),
-  CONSTRAINT `likes_ibfk_1` FOREIGN KEY (`photo`) REFERENCES `photos` (`pid`)
+  CONSTRAINT `likes_ibfk_1` FOREIGN KEY (`photo`) REFERENCES `photos` (`pid`),
+  CONSTRAINT `likes_ibfk_2` FOREIGN KEY (`user`) REFERENCES `users` (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
 
 
 
 # Dump of table photos
 # ------------------------------------------------------------
 
-
 DROP TABLE IF EXISTS `photos`;
-
 
 CREATE TABLE `photos` (
   `pid` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -160,21 +134,16 @@ CREATE TABLE `photos` (
   PRIMARY KEY (`pid`),
   KEY `album` (`album`),
   KEY `owner` (`owner`),
-  CONSTRAINT `photos_ibfk_2` FOREIGN KEY (`owner`) REFERENCES `users` (`uid`),
-  CONSTRAINT `photos_ibfk_1` FOREIGN KEY (`album`) REFERENCES `albums` (`aid`)
+  CONSTRAINT `photos_ibfk_1` FOREIGN KEY (`album`) REFERENCES `albums` (`aid`),
+  CONSTRAINT `photos_ibfk_2` FOREIGN KEY (`owner`) REFERENCES `users` (`uid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
 
 
 
 # Dump of table tags
 # ------------------------------------------------------------
 
-
 DROP TABLE IF EXISTS `tags`;
-
 
 CREATE TABLE `tags` (
   `tid` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -187,15 +156,10 @@ CREATE TABLE `tags` (
 
 
 
-
-
-
 # Dump of table users
 # ------------------------------------------------------------
 
-
 DROP TABLE IF EXISTS `users`;
-
 
 CREATE TABLE `users` (
   `uid` int(11) unsigned NOT NULL AUTO_INCREMENT,
@@ -209,12 +173,9 @@ CREATE TABLE `users` (
   `state` varchar(64) DEFAULT NULL,
   `country` varchar(64) DEFAULT NULL,
   `school` varchar(64) DEFAULT NULL,
-  PRIMARY KEY (`uid`)
+  PRIMARY KEY (`uid`),
+  UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
-
-
-
 
 
 
